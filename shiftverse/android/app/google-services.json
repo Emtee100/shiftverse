@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "525400202358",
+    "project_id": "shiftverse",
+    "storage_bucket": "shiftverse.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:525400202358:android:151f9e021ba2a62dc19357",
+        "android_client_info": {
+          "package_name": "com.shiftverse.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAcCFzV-B3GLCVNGDDmhFgQ8aSKJ-7Vgf8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

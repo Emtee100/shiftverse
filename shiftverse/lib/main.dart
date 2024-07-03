@@ -1,7 +1,11 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:shiftverse/Themes/theme.dart';
+import 'package:shiftverse/pages/authpage.dart';
 
-void main() {
+Future <void> main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -13,11 +17,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'ShiftVerse',
       darkTheme: SVtheme.darkTheme,
       theme: SVtheme.lightTheme,
       themeMode: ThemeMode.system,
-      home: const MyHomePage(title: 'ShiftVerse'),
+      home: const Authpage()
     );
   }
 }
@@ -48,7 +52,10 @@ class _MyHomePageState extends State<MyHomePage> {
         centerTitle: true,
         title: Text(
           widget.title,
-          style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+          style: Theme.of(context)
+              .textTheme
+              .titleLarge!
+              .copyWith(color: Theme.of(context).colorScheme.onPrimary),
         ),
       ),
       body: Center(
@@ -60,7 +67,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             Text(
               '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
+              style: Theme.of(context).textTheme.titleLarge,
             ),
           ],
         ),
@@ -69,16 +76,18 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Theme.of(context).colorScheme.primary,
         onPressed: _incrementCounter,
         tooltip: 'Increment',
-        child:  Icon(Icons.add,color: Theme.of(context).colorScheme.onPrimary),
+        child: Icon(Icons.add, color: Theme.of(context).colorScheme.onPrimary),
       ), // This trailing comma makes auto-formatting nicer for build methods.
       bottomNavigationBar: NavigationBar(
         backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
         destinations: const [
-        NavigationDestination(icon: Icon(Icons.home), label: 'home'),
-        NavigationDestination(icon: Icon(Icons.save), label: 'shifts'),
-        NavigationDestination(icon: Icon(Icons.bar_chart), label: 'reports'),
-        NavigationDestination(icon: Icon(Icons.account_circle), label: 'profile')
-      ],),
+          NavigationDestination(icon: Icon(Icons.home), label: 'home'),
+          NavigationDestination(icon: Icon(Icons.save), label: 'shifts'),
+          NavigationDestination(icon: Icon(Icons.bar_chart), label: 'reports'),
+          NavigationDestination(
+              icon: Icon(Icons.account_circle), label: 'profile')
+        ],
+      ),
     );
   }
 }
