@@ -4,7 +4,7 @@ class SVtheme {
   static ThemeData lightTheme = ThemeData(
     fontFamily: 'Gilroy',
     textTheme: const TextTheme(
-      headlineLarge: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+      headlineLarge: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
       headlineMedium: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
       headlineSmall: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
       titleLarge: TextStyle(fontSize: 24),
@@ -23,7 +23,7 @@ class SVtheme {
     colorScheme: ColorScheme.fromSeed(
         brightness: Brightness.dark, seedColor: Colors.blue),
     textTheme: const TextTheme(
-      headlineLarge: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+      headlineLarge: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
       headlineMedium: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
       headlineSmall: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
       titleLarge: TextStyle(fontSize: 24),
