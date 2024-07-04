@@ -1,0 +1,28 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "shiftverse",
+            "cwd": "shiftverse",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "shiftverse (profile mode)",
+            "cwd": "shiftverse",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "shiftverse (release mode)",
+            "cwd": "shiftverse",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        }
+    ]
+}

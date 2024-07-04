@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
@@ -136,7 +137,9 @@ class _SignInPageState extends State<SignInPage> {
                       style: Theme.of(context).textTheme.labelMedium!.copyWith(
                           color: Theme.of(context).colorScheme.onSurface)),
                   GestureDetector(
-                    onTap: (){},
+                    onTap: (){
+                      context.push('/signup');
+                    },
                     child: RichText(
                         text: TextSpan(
                             text: 'Sign up',

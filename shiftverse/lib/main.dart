@@ -1,8 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:shiftverse/Routes/router.dart';
 import 'package:shiftverse/Themes/theme.dart';
 import 'package:shiftverse/firebase_options.dart';
-import 'package:shiftverse/pages/authpage.dart';
 
 Future <void> main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,13 +18,13 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
+      routerConfig: NavigationLogic().router,
       debugShowCheckedModeBanner: false,
       title: 'ShiftVerse',
       darkTheme: SVtheme.darkTheme,
       theme: SVtheme.lightTheme,
       themeMode: ThemeMode.system,
-      home: const Authpage()
     );
   }
 }
