@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
@@ -10,9 +12,14 @@ class Homepage extends StatefulWidget {
 class _HomepageState extends State<Homepage> {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       body: Center(
-        child: Text('homepage'),
+        child: ElevatedButton(
+            onPressed: () {
+              FirebaseAuth.instance.signOut();
+              context.go('/');
+            },
+            child: const Text('Sign out')),
       ),
     );
   }

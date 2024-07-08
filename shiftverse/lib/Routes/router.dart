@@ -1,5 +1,6 @@
 import 'package:go_router/go_router.dart';
 import 'package:shiftverse/pages/authpage.dart';
+import 'package:shiftverse/pages/homepage.dart';
 import 'package:shiftverse/pages/resetpassword.dart';
 import 'package:shiftverse/pages/signin.dart';
 import 'package:shiftverse/pages/signup.dart';
@@ -26,6 +27,7 @@ class NavigationLogic {
     GoRoute(
         path: '/password-reset',
         builder: (context, state) => const PasswordReset()),
+    GoRoute(path: '/home',builder: (context, state) => const Homepage(),)
     //
   ]);
 

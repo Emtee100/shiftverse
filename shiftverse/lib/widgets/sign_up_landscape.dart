@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:shiftverse/controllers/firebaseController.dart';
-import 'package:shiftverse/widgets/google_sign_in_button.dart';
-import 'package:shiftverse/widgets/signinform.dart';
+import 'package:shiftverse/widgets/signupform.dart';
 
-class SignInLandscape extends StatelessWidget {
-  const SignInLandscape({super.key});
+class SignUpLandscape extends StatelessWidget {
+  const SignUpLandscape({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +23,7 @@ class SignInLandscape extends StatelessWidget {
                 ),
                 ConstrainedBox(
                     constraints: const BoxConstraints(maxWidth: 240),
-                    child: Text('Already have an account? Sign in',
+                    child: Text('Welcome aboard! Sign up to get on board',
                         style: Theme.of(context).textTheme.labelMedium!.copyWith(
                             color: Theme.of(context).colorScheme.onSurface))),
                 const SizedBox(height: 20),
@@ -51,18 +50,12 @@ class SignInLandscape extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ChangeNotifierProvider(
-                  create: (context)=>FirebaseContorller(),
-                  child: const Signinform()),
+                  create: (context) => FirebaseContorller(),
+                  child: const SignUpForm()),
                 const SizedBox(
                   height: 20,
                 ),
               
-                // google sign in button
-              
-                const GoogleSignInButton(),
-                const SizedBox(
-                  height: 20,
-                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -71,7 +64,7 @@ class SignInLandscape extends StatelessWidget {
                             color: Theme.of(context).colorScheme.onSurface)),
                     GestureDetector(
                       onTap: () {
-                        context.push('/signup');
+                        context.go('/signin');
                       },
                       child: RichText(
                           text: TextSpan(

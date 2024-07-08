@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shiftverse/controllers/firebaseController.dart';
 
 class Signinform extends StatefulWidget {
   const Signinform({super.key});
@@ -27,54 +29,85 @@ class _SigninformState extends State<Signinform> {
 
   bool isPasswordVisible = false;
 
+  //this key is used to uniquely identify the sign in form and
+  // help in validation of the contents of the form
+  final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 25),
-      child: Form(
-          child: Column(
-        children: [
-          TextFormField(
-              autovalidateMode: AutovalidateMode.onUserInteraction,
-              controller: _emailController,
-              keyboardType: TextInputType.emailAddress,
-              decoration: InputDecoration(
-                labelText: 'Email',
-                border:
-                    OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
-              )),
-          const SizedBox(height: 20),
-          TextFormField(
-              autovalidateMode: AutovalidateMode.onUserInteraction,
-              controller: _passwordController,
-              obscureText: isPasswordVisible ? false : true,
-              decoration: InputDecoration(
-                suffixIcon: IconButton(
+    // the consumer widget is used to listen to the value of the
+    // provider and rebuild the widget when the value changes
+    return Consumer<FirebaseContorller>(
+      builder: (context, value, child) => Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 25),
+        child: Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                TextFormField(
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  controller: _emailController,
+                  keyboardType: TextInputType.emailAddress,
+                  decoration: InputDecoration(
+                    labelText: 'Email',
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20)),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your email';
+                    } else {
+                      return null;
+                    }
+                  },
+                ),
+                const SizedBox(height: 20),
+                TextFormField(
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  controller: _passwordController,
+                  obscureText: isPasswordVisible ? false : true,
+                  decoration: InputDecoration(
+                    suffixIcon: IconButton(
+                        onPressed: () {
+                          setState(() {
+                            isPasswordVisible = !isPasswordVisible;
+                          });
+                        },
+                        icon: isPasswordVisible
+                            ? const Icon(Icons.visibility)
+                            : const Icon(Icons.visibility_off)),
+                    labelText: 'Password',
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20)),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your password';
+                    } else {
+                      return null;
+                    }
+                  },
+                ),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: TextButton(
+                      onPressed: () {}, child: const Text("Forgot password?")),
+                ),
+                FilledButton(
+                    style: const ButtonStyle(
+                        minimumSize:
+                            WidgetStatePropertyAll(Size(double.infinity, 40))),
                     onPressed: () {
-                      setState(() {
-                        isPasswordVisible = !isPasswordVisible;
-                      });
+                      // the if statements checks the validator functions of the textformfields
+                      // if they return null, the form is valid and the user can sign in
+                      if (_formKey.currentState!.validate()) {
+                        value.signIn(_emailController.text.trim(),
+                            _passwordController.text.trim());
+                      }
                     },
-                    icon: isPasswordVisible
-                        ? const Icon(Icons.visibility)
-                        : const Icon(Icons.visibility_off)),
-                labelText: 'Password',
-                border:
-                    OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
-              )),
-          Align(
-            alignment: Alignment.centerRight,
-            child: TextButton(
-                onPressed: () {}, child: const Text("Forgot password?")),
-          ),
-          FilledButton(
-              style: const ButtonStyle(
-                  minimumSize:
-                      WidgetStatePropertyAll(Size(double.infinity, 40))),
-              onPressed: () {},
-              child: const Text('Sign in'))
-        ],
-      )),
+                    child: const Text('Sign in'))
+              ],
+            )),
+      ),
     );
   }
 }

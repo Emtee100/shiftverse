@@ -1,47 +1,53 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class FirebaseContorller extends ChangeNotifier{
+class FirebaseContorller extends ChangeNotifier {
   final firebaseAuth = FirebaseAuth.instance;
 
   //Sign in with email and password
-  void signIn(String email, String password){
-    try{
-      firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
-    }on FirebaseAuthException catch(e){
-      if(e.code == 'user-not-found'){
+  void signIn(String email, String password) async {
+    try {
+      await firebaseAuth.signInWithEmailAndPassword(
+          email: email, password: password);
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
         print('No user found for that email');
-      }else if(e.code == 'wrong-password'){
+      } else if (e.code == 'wrong-password') {
         print('Wrong password provided for that user');
-      }else if(e.code == 'invalid-email'){
+      } else if (e.code == 'invalid-email') {
         print('Email is not valid, please enter a valid email address');
-      }else if(e.code == 'user-not-found'){
+      } else if (e.code == 'user-not-found') {
         print('User is not found, please sign up first');
       }
+    } catch (e) {
+      print(e);
     }
   }
+
   //Sign up with email and password
-  void signUp(String email, String password){
-    try{
-      firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
-    }on FirebaseAuthException catch(e){
-      if(e.code == 'email-already-in-use'){
+  void signUp(String email, String password) {
+    try {
+      firebaseAuth.createUserWithEmailAndPassword(
+          email: email, password: password);
+      
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'email-already-in-use') {
         print('Email is already in use, please sign in');
-      }else if(e.code == 'weak-password'){
+      } else if (e.code == 'weak-password') {
         print('Password is too weak, please enter a stronger password');
-      }else if(e.code == 'invalid-email'){
+      } else if (e.code == 'invalid-email') {
         print('Email is not valid, please enter a valid email address');
       }
     }
   }
 
   //Sign out
-  void signOut(){
+  void signOut() {
     firebaseAuth.signOut();
   }
 
   //Reset password
-  void resetPassowrd(String email){
+  void resetPassowrd(String email) {
     firebaseAuth.sendPasswordResetEmail(email: email);
   }
 
@@ -56,8 +62,7 @@ class FirebaseContorller extends ChangeNotifier{
   // }
   //Send email verification
 
-  void sendEmailVerification(){
+  void sendEmailVerification() {
     firebaseAuth.currentUser?.sendEmailVerification();
   }
-
 }
