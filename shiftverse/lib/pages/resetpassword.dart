@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shiftverse/controllers/firebaseController.dart';
 import 'package:shiftverse/widgets/reset_email_form.dart';
 
 class PasswordReset extends StatelessWidget {
@@ -21,7 +23,9 @@ class PasswordReset extends StatelessWidget {
                   style: Theme.of(context).textTheme.labelMedium!.copyWith(
                       color: Theme.of(context).colorScheme.onSurface))),
           const SizedBox(height: 20),
-          const ResetEmailForm()
+          ChangeNotifierProvider(
+            create: (context) =>FirebaseContorller(),
+            child: const ResetEmailForm())
         ],
       ),
     ));

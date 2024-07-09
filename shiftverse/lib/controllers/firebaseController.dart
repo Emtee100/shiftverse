@@ -50,7 +50,7 @@ class FirebaseContorller extends ChangeNotifier {
   }
 
   //Reset password
-  void resetPassowrd(String email) {
+  void resetPassword(String email) {
     firebaseAuth.sendPasswordResetEmail(email: email);
   }
 
