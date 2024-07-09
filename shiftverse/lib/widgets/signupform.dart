@@ -166,20 +166,16 @@ class _SignUpFormState extends State<SignUpForm> {
                       }
                     },
                   ),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: TextButton(
-                        onPressed: () {},
-                        child: const Text("Forgot password?")),
-                  ),
+                 const SizedBox(height: 20),
                   FilledButton(
                       style: const ButtonStyle(
                           minimumSize: WidgetStatePropertyAll(
                               Size(double.infinity, 40))),
                       onPressed: () {
                         if(_formKey.currentState!.validate()){
-                          value.signUp(_emailController.text.trim(), _passwordController.text.trim());
-                          context.go('/home');
+                          value.signUp(_emailController.text.trim(), _passwordController.text.trim()); 
+                          //value.sendEmailVerification();
+                          context.go('/email-verification');
                         }
                       },
                       child: const Text('Sign up'))

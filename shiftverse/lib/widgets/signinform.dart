@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:shiftverse/controllers/firebaseController.dart';
 
@@ -31,7 +32,7 @@ class _SigninformState extends State<Signinform> {
 
   //this key is used to uniquely identify the sign in form and
   // help in validation of the contents of the form
-  final _formKey = GlobalKey<FormState>();
+  final _emailSigninformKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     // the consumer widget is used to listen to the value of the
@@ -40,7 +41,7 @@ class _SigninformState extends State<Signinform> {
       builder: (context, value, child) => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 25),
         child: Form(
-            key: _formKey,
+            key: _emailSigninformKey,
             child: Column(
               children: [
                 TextFormField(
@@ -90,7 +91,9 @@ class _SigninformState extends State<Signinform> {
                 Align(
                   alignment: Alignment.centerRight,
                   child: TextButton(
-                      onPressed: () {}, child: const Text("Forgot password?")),
+                      onPressed: () {
+                        context.push('/password-reset');
+                      }, child: const Text("Forgot password?")),
                 ),
                 FilledButton(
                     style: const ButtonStyle(
@@ -99,7 +102,7 @@ class _SigninformState extends State<Signinform> {
                     onPressed: () {
                       // the if statements checks the validator functions of the textformfields
                       // if they return null, the form is valid and the user can sign in
-                      if (_formKey.currentState!.validate()) {
+                      if (_emailSigninformKey.currentState!.validate()) {
                         value.signIn(_emailController.text.trim(),
                             _passwordController.text.trim());
                       }

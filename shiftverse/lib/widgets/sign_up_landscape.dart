@@ -22,7 +22,7 @@ class SignUpLandscape extends StatelessWidget {
                   style: Theme.of(context).textTheme.headlineLarge,
                 ),
                 ConstrainedBox(
-                    constraints: const BoxConstraints(maxWidth: 240),
+                    constraints: const BoxConstraints(maxWidth: 300),
                     child: Text('Welcome aboard! Sign up to get on board',
                         style: Theme.of(context).textTheme.labelMedium!.copyWith(
                             color: Theme.of(context).colorScheme.onSurface))),

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 class FirebaseContorller extends ChangeNotifier {
   final firebaseAuth = FirebaseAuth.instance;
+  final user = FirebaseAuth.instance.currentUser;
 
   //Sign in with email and password
   void signIn(String email, String password) async {
@@ -25,11 +26,13 @@ class FirebaseContorller extends ChangeNotifier {
   }
 
   //Sign up with email and password
-  void signUp(String email, String password) {
+  void signUp(String email, String password) async{
     try {
-      firebaseAuth.createUserWithEmailAndPassword(
+      //create a user with email and password
+      final UserCredential userCredential = await firebaseAuth.createUserWithEmailAndPassword(
           email: email, password: password);
-      
+      //send email verification
+       userCredential.user?.sendEmailVerification();
     } on FirebaseAuthException catch (e) {
       if (e.code == 'email-already-in-use') {
         print('Email is already in use, please sign in');
@@ -51,6 +54,10 @@ class FirebaseContorller extends ChangeNotifier {
     firebaseAuth.sendPasswordResetEmail(email: email);
   }
 
+  // void sendEmailVerification() async {
+  //   firebaseAuth.currentUser?.sendEmailVerification();
+  // }
+
   //Change password
   // void changePassword(String password){
   //   firebaseAuth.currentUser.updatePassword(password);
@@ -60,9 +67,4 @@ class FirebaseContorller extends ChangeNotifier {
   // void changeEmail(String email){
   //   firebaseAuth.currentUser?.verifyBeforeUpdateEmail(email);
   // }
-  //Send email verification
-
-  void sendEmailVerification() {
-    firebaseAuth.currentUser?.sendEmailVerification();
-  }
 }
