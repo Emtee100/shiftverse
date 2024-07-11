@@ -12,7 +12,20 @@
           "package_name": "com.shiftverse.app"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "525400202358-t6cf0442am3laneo8ct5gfamvlci3o8f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.shiftverse.app",
+            "certificate_hash": "a2e4bc855b484b892c79cd1f08831696cc6a0588"
+          }
+        },
+        {
+          "client_id": "525400202358-d7kdn3ds65kvp9488vu8k9jo16qerqib.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyAcCFzV-B3GLCVNGDDmhFgQ8aSKJ-7Vgf8"
@@ -20,7 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "525400202358-d7kdn3ds65kvp9488vu8k9jo16qerqib.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "525400202358-fhur27pisof2jnktg1pim127ugm19ppv.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.shiftverse"
+              }
+            }
+          ]
         }
       }
     }

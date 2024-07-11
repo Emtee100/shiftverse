@@ -1,9 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class FirebaseContorller extends ChangeNotifier {
   final firebaseAuth = FirebaseAuth.instance;
   final user = FirebaseAuth.instance.currentUser;
+  //String? errorCode;
 
   //Sign in with email and password
   void signIn(String email, String password) async {
@@ -26,22 +28,46 @@ class FirebaseContorller extends ChangeNotifier {
   }
 
   //Sign up with email and password
-  void signUp(String email, String password) async{
+  Future<String?> signUp(String email, String password) async {
+    String? errorCode;
     try {
       //create a user with email and password
-      final UserCredential userCredential = await firebaseAuth.createUserWithEmailAndPassword(
-          email: email, password: password);
+      //we use await to ensure that the method creates and
+      //signs in the user so as to send the verification email
+      UserCredential userCredential = await firebaseAuth
+          .createUserWithEmailAndPassword(email: email, password: password);
+
       //send email verification
-       userCredential.user?.sendEmailVerification();
+      sendEmailVerification(userCredential);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'email-already-in-use') {
-        print('Email is already in use, please sign in');
+        errorCode = 'email-already-in-use';
       } else if (e.code == 'weak-password') {
-        print('Password is too weak, please enter a stronger password');
+        errorCode = 'weak-password';
       } else if (e.code == 'invalid-email') {
-        print('Email is not valid, please enter a valid email address');
+        errorCode = 'invalid-email';
       }
     }
+    return errorCode;
+  }
+
+  //sign in with Google
+  Future<UserCredential> signInWithGoogle() async {
+    // Trigger the authentication flow
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+    // Obtain the auth details from the request
+    final GoogleSignInAuthentication? googleAuth =
+        await googleUser?.authentication;
+
+    // Create a new credential
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth?.accessToken,
+      idToken: googleAuth?.idToken,
+    );
+
+    // Once signed in, return the UserCredential
+    return await FirebaseAuth.instance.signInWithCredential(credential);
   }
 
   //Sign out
@@ -50,13 +76,25 @@ class FirebaseContorller extends ChangeNotifier {
   }
 
   //Reset password
-  void resetPassword(String email) {
-    firebaseAuth.sendPasswordResetEmail(email: email);
+  Future <String?> resetPassword(String email) async{
+    String? resetPassworderrorCode;
+    try {
+      await firebaseAuth.sendPasswordResetEmail(email: email);
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'auth/invalid-email') {
+        resetPassworderrorCode = 'invalid-email';
+        print(resetPassworderrorCode);
+      } else if (e.code == 'auth/user-not-found') {
+        resetPassworderrorCode = 'user-not-found';
+        print(resetPassworderrorCode);
+      }
+    }
+    return resetPassworderrorCode;
   }
 
-  // void sendEmailVerification() async {
-  //   firebaseAuth.currentUser?.sendEmailVerification();
-  // }
+  void sendEmailVerification(UserCredential userCredential) {
+    userCredential.user?.sendEmailVerification();
+  }
 
   //Change password
   // void changePassword(String password){

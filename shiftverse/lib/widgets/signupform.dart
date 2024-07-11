@@ -52,135 +52,209 @@ class _SignUpFormState extends State<SignUpForm> {
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    return Consumer<FirebaseContorller>(
-        builder: (context, value, child) => Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 25),
-              child: Form(
-                key: _formKey,
-                  child: Column(
-                children: [
-                  TextFormField(
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    controller: _nameController,
-                    keyboardType: TextInputType.text,
-                    decoration: InputDecoration(
-                      labelText: 'Full Names',
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20)),
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter your full name';
-                      } else {
-                        return null;
-                      }
-                    },
+    return Consumer<FirebaseContorller>(builder: (context, value, child) {
+      //String errorCode = value.errorCode;
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 25),
+        child: Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                TextFormField(
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  controller: _nameController,
+                  keyboardType: TextInputType.text,
+                  decoration: InputDecoration(
+                    labelText: 'Full Names',
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20)),
                   ),
-                  const SizedBox(height: 20),
-                  TextFormField(
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    controller: _emailController,
-                    keyboardType: TextInputType.emailAddress,
-                    decoration: InputDecoration(
-                      labelText: 'Email',
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20)),
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter your email';
-                      } else {
-                        return null;
-                      }
-                    },
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your full name';
+                    } else {
+                      return null;
+                    }
+                  },
+                ),
+                const SizedBox(height: 20),
+                TextFormField(
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  controller: _emailController,
+                  keyboardType: TextInputType.emailAddress,
+                  decoration: InputDecoration(
+                    labelText: 'Email',
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20)),
                   ),
-                  const SizedBox(height: 20),
-                  DropdownMenu(
-                    menuStyle: MenuStyle(
-                        shape: WidgetStateProperty.all(RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20)))),
-                    expandedInsets: EdgeInsets.zero,
-                    dropdownMenuEntries: jumuiya,
-                    controller: _jumuiyaController,
-                    hintText: 'Jumuiya',
-                    initialSelection: 'St.Sylvester',
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your email';
+                    } else {
+                      return null;
+                    }
+                  },
+                ),
+                const SizedBox(height: 20),
+                DropdownMenu(
+                  menuStyle: MenuStyle(
+                      shape: WidgetStateProperty.all(RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20)))),
+                  expandedInsets: EdgeInsets.zero,
+                  dropdownMenuEntries: jumuiya,
+                  controller: _jumuiyaController,
+                  hintText: 'Jumuiya',
+                  initialSelection: 'St.Sylvester',
+                ),
+                const SizedBox(height: 20),
+                TextFormField(
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  controller: _passwordController,
+                  obscureText: isPasswordVisible ? false : true,
+                  keyboardType: TextInputType.text,
+                  decoration: InputDecoration(
+                    suffixIcon: IconButton(
+                        onPressed: () {
+                          setState(() {
+                            isPasswordVisible = !isPasswordVisible;
+                          });
+                        },
+                        icon: isPasswordVisible
+                            ? const Icon(Icons.visibility)
+                            : const Icon(Icons.visibility_off)),
+                    labelText: 'Password',
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20)),
                   ),
-                  const SizedBox(height: 20),
-                  TextFormField(
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    controller: _passwordController,
-                    obscureText: isPasswordVisible ? false : true,
-                    keyboardType: TextInputType.text,
-                    decoration: InputDecoration(
-                      suffixIcon: IconButton(
-                          onPressed: () {
-                            setState(() {
-                              isPasswordVisible = !isPasswordVisible;
-                            });
-                          },
-                          icon: isPasswordVisible
-                              ? const Icon(Icons.visibility)
-                              : const Icon(Icons.visibility_off)),
-                      labelText: 'Password',
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20)),
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter a password';
-                      } else if (value != _confirmPasswordController.text) {
-                        return 'Value in password should match with value in confirm password';
-                      } else {
-                        return null;
-                      }
-                    },
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter a password';
+                    } else if (value != _confirmPasswordController.text) {
+                      return 'Value in password should match with value in confirm password';
+                    } else {
+                      return null;
+                    }
+                  },
+                ),
+                const SizedBox(height: 20),
+                TextFormField(
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  controller: _confirmPasswordController,
+                  keyboardType: TextInputType.text,
+                  obscureText: isConfirmPasswordVisible ? false : true,
+                  decoration: InputDecoration(
+                    labelText: 'Confirm Password',
+                    suffixIcon: IconButton(
+                        onPressed: () {
+                          setState(() {
+                            isConfirmPasswordVisible =
+                                !isConfirmPasswordVisible;
+                          });
+                        },
+                        icon: isConfirmPasswordVisible
+                            ? const Icon(Icons.visibility)
+                            : const Icon(Icons.visibility_off)),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20)),
                   ),
-                  const SizedBox(height: 20),
-                  TextFormField(
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    controller: _confirmPasswordController,
-                    keyboardType: TextInputType.text,
-                    obscureText: isConfirmPasswordVisible ? false : true,
-                    decoration: InputDecoration(
-                      labelText: 'Confirm Password',
-                      suffixIcon: IconButton(
-                          onPressed: () {
-                            setState(() {
-                              isConfirmPasswordVisible =
-                                  !isConfirmPasswordVisible;
-                            });
-                          },
-                          icon: isConfirmPasswordVisible
-                              ? const Icon(Icons.visibility)
-                              : const Icon(Icons.visibility_off)),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20)),
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter a password';
-                      } else if (value != _passwordController.text) {
-                        return 'The two passwords should match';
-                      } else {
-                        return null;
-                      }
-                    },
-                  ),
-                 const SizedBox(height: 20),
-                  FilledButton(
-                      style: const ButtonStyle(
-                          minimumSize: WidgetStatePropertyAll(
-                              Size(double.infinity, 40))),
-                      onPressed: () {
-                        if(_formKey.currentState!.validate()){
-                          value.signUp(_emailController.text.trim(), _passwordController.text.trim()); 
-                          //value.sendEmailVerification();
-                          context.go('/email-verification');
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter a password';
+                    } else if (value != _passwordController.text) {
+                      return 'The two passwords should match';
+                    } else {
+                      return null;
+                    }
+                  },
+                ),
+                const SizedBox(height: 20),
+                FilledButton(
+                    style: const ButtonStyle(
+                        minimumSize:
+                            WidgetStatePropertyAll(Size(double.infinity, 40))),
+                    onPressed: () async {
+                      if (_formKey.currentState!.validate()) {
+                        String? errorCode = await value.signUp(
+                            _emailController.text.trim(),
+                            _passwordController.text.trim());
+                        //print(value.errorCode);
+                        switch (errorCode) {
+                          case null:
+                            if (context.mounted) {
+                              context.go('/email-verification');
+                            }
+                            break;
+                          case 'email-already-in-use':
+                            showDialog(
+                                context: context,
+                                builder: (
+                                  context,
+                                ) {
+                                  return AlertDialog(
+                                    actions: [
+                                      TextButton(
+                                          onPressed: () =>
+                                              Navigator.pop(context),
+                                          child: const Text(
+                                            'OK',
+                                          ))
+                                    ],
+                                    content: const Text(
+                                        'The email provided is being used by an another user, please use another email'),
+                                    title: const Text('Email already in use'),
+                                  );
+                                });
+                            break;
+                          case 'weak-password':
+                            showDialog(
+                                context: context,
+                                builder: (
+                                  context,
+                                ) {
+                                  return AlertDialog(
+                                    actions: [
+                                      TextButton(
+                                          onPressed: () =>
+                                              Navigator.pop(context),
+                                          child: const Text(
+                                            'OK',
+                                          ))
+                                    ],
+                                    content: const Text(
+                                        'You have provided a weak password. Please provide a stronger password to continue'),
+                                    title: const Text('Weak Password'),
+                                  );
+                                });
+                            break;
+                          case 'invalid-email':
+                            showDialog(
+                                context: context,
+                                builder: (
+                                  context,
+                                ) {
+                                  return AlertDialog(
+                                    actions: [
+                                      TextButton(
+                                          onPressed: () =>
+                                              Navigator.pop(context),
+                                          child: const Text(
+                                            'OK',
+                                          ))
+                                    ],
+                                    content: const Text(
+                                        'The email provided is not invalid and poorly formatted as an email, please enter a proper email'),
+                                    title: const Text('Invalid Email'),
+                                  );
+                                });
+                            break;
+                          default:
                         }
-                      },
-                      child: const Text('Sign up'))
-                ],
-              )),
-            ));
+                      }
+                    },
+                    child: const Text('Sign up'))
+              ],
+            )),
+      );
+    });
   }
 }
