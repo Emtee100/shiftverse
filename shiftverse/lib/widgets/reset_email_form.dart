@@ -62,34 +62,14 @@ class _ResetEmailFormState extends State<ResetEmailForm> {
                           style: const ButtonStyle(
                               minimumSize: WidgetStatePropertyAll(
                                   Size(double.infinity, 40))),
-                          onPressed: () async{
+                          onPressed: () async {
                             // the if statements checks the validator function of the textformfield
                             // if they return null, the form is valid and the password reset email is sent
                             if (_resetPasswordformKey.currentState!
                                 .validate()) {
                               String? errorCode = await value
                                   .resetPassword(_emailController.text.trim());
-                              if (errorCode == 'user-not-found') {
-                                showDialog(
-                                    context: context,
-                                    builder: (
-                                      context,
-                                    ) {
-                                      return AlertDialog(
-                                        actions: [
-                                          TextButton(
-                                              onPressed: () =>
-                                                  Navigator.pop(context),
-                                              child: const Text(
-                                                'OK',
-                                              ))
-                                        ],
-                                        content: const Text(
-                                            'The email provided is being is not linked to a user, please provide a registered email'),
-                                        title: const Text('User email not found'),
-                                      );
-                                    });
-                              } else if (errorCode == 'invalid-email') {
+                              if (errorCode == 'invalid-email') {
                                 showDialog(
                                     context: context,
                                     builder: (
@@ -109,7 +89,7 @@ class _ResetEmailFormState extends State<ResetEmailForm> {
                                         title: const Text('Email is invalid'),
                                       );
                                     });
-                              } else if(errorCode == null){
+                              } else if (errorCode == null) {
                                 showModalBottomSheet(
                                     isDismissible: false,
                                     showDragHandle: true,
@@ -190,7 +170,6 @@ class _ResetEmailFormState extends State<ResetEmailForm> {
                                             ],
                                           ));
                                     });
-                                
                               }
                             }
                           },

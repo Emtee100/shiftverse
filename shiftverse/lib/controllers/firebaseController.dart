@@ -46,6 +46,7 @@ class FirebaseContorller extends ChangeNotifier {
         errorCode = 'weak-password';
       } else if (e.code == 'invalid-email') {
         errorCode = 'invalid-email';
+        print(errorCode);
       }
     }
     return errorCode;
@@ -77,19 +78,15 @@ class FirebaseContorller extends ChangeNotifier {
 
   //Reset password
   Future <String?> resetPassword(String email) async{
-    String? resetPassworderrorCode;
+    String? resetPasswordErrorCode;
     try {
-      await firebaseAuth.sendPasswordResetEmail(email: email);
+       await firebaseAuth.sendPasswordResetEmail(email: email);
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'auth/invalid-email') {
-        resetPassworderrorCode = 'invalid-email';
-        print(resetPassworderrorCode);
-      } else if (e.code == 'auth/user-not-found') {
-        resetPassworderrorCode = 'user-not-found';
-        print(resetPassworderrorCode);
+      if (e.code == 'invalid-email') {
+        resetPasswordErrorCode = e.code;
       }
     }
-    return resetPassworderrorCode;
+    return resetPasswordErrorCode;
   }
 
   void sendEmailVerification(UserCredential userCredential) {
