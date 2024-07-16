@@ -56,7 +56,9 @@ class SignInPortrait extends StatelessWidget {
                   ),
               
                   // google sign in button
-                  const GoogleSignInButton(),
+                  ChangeNotifierProvider(
+                    create: (context)=>FirebaseContorller(),
+                    child: const GoogleSignInButton()),
 
                   const SizedBox(
                     height: 20,
