@@ -17,7 +17,7 @@ class HomeScreen extends StatelessWidget {
             ),
             Text(
               'Hi, Mark Thomas',
-              style: Theme.of(context).textTheme.titleMedium,
+              style: Theme.of(context).textTheme.headlineMedium,
             ),
             const SizedBox(
               height: 15,
@@ -54,9 +54,11 @@ class HomeScreen extends StatelessWidget {
                       return Padding(
                         padding: const EdgeInsets.only(bottom: 20),
                         child: ListTile(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20)),
                           tileColor: Theme.of(context)
                               .colorScheme
-                              .surfaceContainerHighest,
+                              .surfaceContainerLow,
                           leading: const Icon(Icons.contact_page),
                           title: const Text('Pamphlets sold: 4650'),
                           subtitle: const Text('Remaining pamphlets: 50'),
@@ -89,12 +91,14 @@ class HomeScreen extends StatelessWidget {
                       return Padding(
                         padding: const EdgeInsets.only(bottom: 20),
                         child: ListTile(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20)),
                             tileColor: Theme.of(context)
                                 .colorScheme
-                                .surfaceContainerHighest,
+                                .surfaceContainerLow,
                             leading: const Icon(Icons.contact_page),
                             title: const Text('Jumuiya: St.Sylvester'),
-                            subtitle: Column(
+                            subtitle: const Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text('Mark Thomas'),
