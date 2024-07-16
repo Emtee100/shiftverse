@@ -41,6 +41,8 @@ dependencies:
   firebase_auth: ^5.1.1
   flutter_svg: ^2.0.10+1
   google_sign_in: ^6.2.1
+  cloud_firestore: ^5.1.0
+  fl_chart: ^0.68.0
 
 dev_dependencies:
   flutter_test:

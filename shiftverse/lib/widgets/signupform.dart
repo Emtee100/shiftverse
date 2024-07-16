@@ -175,8 +175,10 @@ class _SignUpFormState extends State<SignUpForm> {
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
                         String? errorCode = await value.signUp(
-                            _emailController.text.trim(),
-                            _passwordController.text.trim());
+                            email: _emailController.text.trim(),
+                            password: _passwordController.text.trim(),
+                            fullNames: _nameController.text.trim(),
+                            jumuiya: _jumuiyaController.text.trim());
                         //print(value.errorCode);
                         switch (errorCode) {
                           case null:
