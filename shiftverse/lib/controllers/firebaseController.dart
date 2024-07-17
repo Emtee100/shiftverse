@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:shiftverse/models/sales.dart';
 import 'package:shiftverse/models/user.dart';
 
 class FirebaseContorller extends ChangeNotifier {
@@ -132,5 +133,24 @@ class FirebaseContorller extends ChangeNotifier {
         //the toFirestore method transforms our custom object to firestore data(map)
         toFirestore: (Member member, _) => member.toFirestore());
     docRef.add(member);
+  }
+
+  //Create a sale entry in the database
+  void createSaleEntry(
+      {required String amountSold,
+      required String pamphletsLeft,
+      required DateTime saleDate}) {
+    //create a reference to the collection
+    final docRef = db.collection('Sales').withConverter(
+        //the fromFirestore method transforms data from firestore to our custom object
+        fromFirestore: (doc, _) => Sale.fromFirestore(doc, _),
+        //the toFirestore method transforms our custom object to firestore data(map)
+        toFirestore: (Sale sale, _) => sale.toFirestore());
+    docRef.add(Sale(
+      uid: user?.uid,
+      saleAmount: int.parse(amountSold),
+      pamphletsLeft: int.parse(pamphletsLeft),
+      saleDate: saleDate,
+    ));
   }
 }

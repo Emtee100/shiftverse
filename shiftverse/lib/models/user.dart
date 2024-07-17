@@ -16,10 +16,10 @@ class Member {
       DocumentSnapshot<Map<String, dynamic>> doc, SnapshotOptions? options) {
     final docData = doc.data();
     return Member(
-        uid: docData?['uid'],
-        fullNames: docData?['fullNames'],
-        email: docData?['email'],
-        jumuiya: docData?['jumuiya']);
+        uid: docData!['uid'],
+        fullNames: docData['fullNames'],
+        email: docData['email'],
+        jumuiya: docData['jumuiya']);
   }
 
   Map<String, String> toFirestore() {
