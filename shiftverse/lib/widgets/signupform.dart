@@ -52,7 +52,7 @@ class _SignUpFormState extends State<SignUpForm> {
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    return Consumer<FirebaseContorller>(builder: (context, value, child) {
+    return Consumer<FirebaseController>(builder: (context, value, child) {
       //String errorCode = value.errorCode;
       return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 25),

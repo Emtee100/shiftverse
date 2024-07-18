@@ -5,7 +5,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shiftverse/models/sales.dart';
 import 'package:shiftverse/models/user.dart';
 
-class FirebaseContorller extends ChangeNotifier {
+class FirebaseController extends ChangeNotifier {
   final firebaseAuth = FirebaseAuth.instance;
   final user = FirebaseAuth.instance.currentUser;
   final db = FirebaseFirestore.instance;
@@ -141,16 +141,29 @@ class FirebaseContorller extends ChangeNotifier {
       required String pamphletsLeft,
       required DateTime saleDate}) {
     //create a reference to the collection
-    final docRef = db.collection('Sales').withConverter(
+    final colRef = db.collection('Sales').withConverter(
         //the fromFirestore method transforms data from firestore to our custom object
         fromFirestore: (doc, _) => Sale.fromFirestore(doc, _),
         //the toFirestore method transforms our custom object to firestore data(map)
         toFirestore: (Sale sale, _) => sale.toFirestore());
-    docRef.add(Sale(
+    colRef.add(Sale(
       uid: user?.uid,
       saleAmount: int.parse(amountSold),
       pamphletsLeft: int.parse(pamphletsLeft),
       saleDate: saleDate,
     ));
+  }
+
+  Stream<QuerySnapshot<Sale>>getSaleRecords() {
+    //create a reference to the collection
+    final colRef = db.collection('Sales').withConverter(
+          fromFirestore: (doc, _) => Sale.fromFirestore(doc, _),
+          toFirestore: (Sale sale, _) => sale.toFirestore(),
+        );
+    
+    //return a stream which listens to the documents in the sales collection
+    colRef.orderBy('saleDate',descending: false).get();
+    return colRef.orderBy('saleDate', descending: true).snapshots();
+
   }
 }

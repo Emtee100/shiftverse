@@ -31,7 +31,7 @@ class SignInPortrait extends StatelessWidget {
               
                   // Form to collect email and password 
                   ChangeNotifierProvider(
-                    create: (context) => FirebaseContorller(),
+                    create: (context) => FirebaseController(),
                     child: const Signinform()),
 
                   const SizedBox(height: 20),
@@ -57,7 +57,7 @@ class SignInPortrait extends StatelessWidget {
               
                   // google sign in button
                   ChangeNotifierProvider(
-                    create: (context)=>FirebaseContorller(),
+                    create: (context)=>FirebaseController(),
                     child: const GoogleSignInButton()),
 
                   const SizedBox(

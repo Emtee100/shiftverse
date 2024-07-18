@@ -51,7 +51,7 @@ class SignInLandscape extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ChangeNotifierProvider(
-                  create: (context)=>FirebaseContorller(),
+                  create: (context)=>FirebaseController(),
                   child: const Signinform()),
                 const SizedBox(
                   height: 20,
@@ -60,7 +60,7 @@ class SignInLandscape extends StatelessWidget {
                 // google sign in button
               
                 ChangeNotifierProvider(
-                  create: (context) => FirebaseContorller(),
+                  create: (context) => FirebaseController(),
                   child: const GoogleSignInButton()),
                 const SizedBox(
                   height: 20,

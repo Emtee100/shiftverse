@@ -37,7 +37,7 @@ class _SigninformState extends State<Signinform> {
   Widget build(BuildContext context) {
     // the consumer widget is used to listen to the value of the
     // provider and rebuild the widget when the value changes
-    return Consumer<FirebaseContorller>(
+    return Consumer<FirebaseController>(
       builder: (context, value, child) => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 25),
         child: Form(

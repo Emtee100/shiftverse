@@ -8,7 +8,7 @@ class GoogleSignInButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<FirebaseContorller>(
+    return Consumer<FirebaseController>(
         builder: (context, value, child) => GestureDetector(
               onTap: () {
                 showDialog(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:shiftverse/controllers/firebaseController.dart';
 
@@ -34,15 +35,16 @@ class _SaleReportFormState extends State<SaleReportForm> {
 
   bool isDateSelected = false;
   late DateTime? pickedDate;
-
+  late DateTime pickedDateandTime;
   @override
   Widget build(BuildContext context) {
-    return Consumer<FirebaseContorller>(
+    return Consumer<FirebaseController>(
       builder: (context, value, child) => Form(
           key: _formKey,
           child: Column(
             children: [
               TextFormField(
+                autovalidateMode: AutovalidateMode.onUserInteraction,
                 controller: _saleAmountController,
                 decoration: InputDecoration(
                     labelText: 'Amount Sold',
@@ -52,6 +54,8 @@ class _SaleReportFormState extends State<SaleReportForm> {
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter the amount sold';
+                  } else if (RegExp(r'[a-zA-z],\.').hasMatch(value)) {
+                    return 'Please enter a valid number';
                   } else {
                     return null;
                   }
@@ -61,6 +65,7 @@ class _SaleReportFormState extends State<SaleReportForm> {
                 height: 15,
               ),
               TextFormField(
+                autovalidateMode: AutovalidateMode.onUserInteraction,
                 controller: _pamphletsLeftController,
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
@@ -70,6 +75,8 @@ class _SaleReportFormState extends State<SaleReportForm> {
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter the number of pamphlets remaining';
+                  } else if (RegExp(r'[a-zA-z],\.').hasMatch(value)) {
+                    return 'Please enter a valid number';
                   } else {
                     return null;
                   }
@@ -83,6 +90,7 @@ class _SaleReportFormState extends State<SaleReportForm> {
                   final firstDate =
                       DateTime.now().subtract(const Duration(days: 14));
                   final lastDate = DateTime.now().add(const Duration(days: 14));
+                  final currentDate = DateTime.now();
                   pickedDate = await showDatePicker(
                     context: context,
                     firstDate: DateTime(
@@ -90,7 +98,7 @@ class _SaleReportFormState extends State<SaleReportForm> {
                     lastDate: lastDate,
                     barrierDismissible: false,
                     initialDatePickerMode: DatePickerMode.day,
-                    initialDate: DateTime.now(),
+                    initialDate: currentDate,
                     switchToCalendarEntryModeIcon:
                         const Icon(Icons.calendar_month),
                   );
@@ -98,7 +106,13 @@ class _SaleReportFormState extends State<SaleReportForm> {
                     setState(() {
                       isDateSelected = true;
                     });
-                    _saleDateController.text = pickedDate.toString();
+                    pickedDateandTime = DateTime(
+                        pickedDate!.year,
+                        pickedDate!.month,
+                        pickedDate!.day,
+                        currentDate.hour,
+                        currentDate.minute);
+                    _saleDateController.text = pickedDateandTime.toString();
                   }
                 },
                 child: Container(
@@ -116,13 +130,7 @@ class _SaleReportFormState extends State<SaleReportForm> {
                           isDateSelected
                               ? '${pickedDate!.year}-${pickedDate!.month}-${pickedDate!.day}'
                               : 'Select sale date',
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyLarge!
-                              .copyWith(
-                                  color: isDateSelected
-                                      ? Colors.white
-                                      : Colors.grey[200])),
+                          style: Theme.of(context).textTheme.bodyLarge!),
                       const Icon(Icons.calendar_month_rounded)
                     ],
                   ),
@@ -136,8 +144,33 @@ class _SaleReportFormState extends State<SaleReportForm> {
                       minimumSize:
                           WidgetStatePropertyAll(Size(double.infinity, 40))),
                   onPressed: () {
-                    if(_formKey.currentState!.validate()){
-                      value.createSaleEntry(amountSold: _saleAmountController.text, pamphletsLeft: _pamphletsLeftController.text, saleDate: pickedDate!);
+                    if (_formKey.currentState!.validate()) {
+                      value.createSaleEntry(
+                          amountSold: _saleAmountController.text,
+                          pamphletsLeft: _pamphletsLeftController.text,
+                          saleDate: pickedDateandTime);
+                      context.pop();
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              title: Text(
+                                'Report Submitted',
+                                style:
+                                    Theme.of(context).textTheme.headlineMedium,
+                              ),
+                              content: const Text(
+                                  'Thank you for submitting your sale report. The report will be reviewed and updated in the system.'),
+                              actions: [
+                                FilledButton(
+                                    style: const ButtonStyle(
+                                        minimumSize: WidgetStatePropertyAll(
+                                            Size(double.infinity, 40))),
+                                    onPressed: () => context.pop(),
+                                    child: const Text('Got it'))
+                              ],
+                            );
+                          });
                     }
                   },
                   child: const Text('Submit'))
