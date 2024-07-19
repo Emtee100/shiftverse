@@ -33,7 +33,7 @@ class SignUpPortrait extends StatelessWidget {
                                         .onSurface))),
                     const SizedBox(height: 20),
                     ChangeNotifierProvider(
-                      create: (context) => FirebaseContorller(),
+                      create: (context) => FirebaseController(),
                       child: const SignUpForm()),
                     const SizedBox(height: 20),
                     Row(mainAxisAlignment: MainAxisAlignment.center, children: [

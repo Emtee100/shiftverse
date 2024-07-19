@@ -50,7 +50,7 @@ class SignUpLandscape extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ChangeNotifierProvider(
-                  create: (context) => FirebaseContorller(),
+                  create: (context) => FirebaseController(),
                   child: const SignUpForm()),
                 const SizedBox(
                   height: 20,

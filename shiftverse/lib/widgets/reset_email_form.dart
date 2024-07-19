@@ -31,7 +31,7 @@ class _ResetEmailFormState extends State<ResetEmailForm> {
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.sizeOf(context).height;
     final screenWidth = MediaQuery.sizeOf(context).width;
-    return Consumer<FirebaseContorller>(
+    return Consumer<FirebaseController>(
         builder: (context, value, child) => Padding(
               padding: const EdgeInsets.symmetric(horizontal: 25),
               child: Form(

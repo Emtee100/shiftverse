@@ -41,3 +41,9 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Google sheets provider
+lib/controllers/sheetsController.dart
+
+# Firebase config
+/android/app/google-services.json

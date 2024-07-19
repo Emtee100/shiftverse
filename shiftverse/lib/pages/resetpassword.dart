@@ -24,7 +24,7 @@ class PasswordReset extends StatelessWidget {
                       color: Theme.of(context).colorScheme.onSurface))),
           const SizedBox(height: 20),
           ChangeNotifierProvider(
-            create: (context) =>FirebaseContorller(),
+            create: (context) =>FirebaseController(),
             child: const ResetEmailForm())
         ],
       ),

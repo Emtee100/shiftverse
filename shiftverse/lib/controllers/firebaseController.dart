@@ -1,11 +1,14 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:shiftverse/models/sales.dart';
+import 'package:shiftverse/models/user.dart';
 
-class FirebaseContorller extends ChangeNotifier {
+class FirebaseController extends ChangeNotifier {
   final firebaseAuth = FirebaseAuth.instance;
   final user = FirebaseAuth.instance.currentUser;
-  //String? errorCode;
+  final db = FirebaseFirestore.instance;
 
   //Sign in with email and password
   void signIn(String email, String password) async {
@@ -28,7 +31,11 @@ class FirebaseContorller extends ChangeNotifier {
   }
 
   //Sign up with email and password
-  Future<String?> signUp(String email, String password) async {
+  Future<String?> signUp(
+      {required String email,
+      required String password,
+      required String fullNames,
+      required String jumuiya}) async {
     String? errorCode;
     try {
       //create a user with email and password
@@ -39,6 +46,20 @@ class FirebaseContorller extends ChangeNotifier {
 
       //send email verification
       sendEmailVerification(userCredential);
+
+      //creating user entry in cloud firestore
+      //create user object
+      Member member = Member(
+        uid: userCredential.user?.uid,
+        fullNames: fullNames,
+        email: email,
+        jumuiya: jumuiya,
+      );
+
+      //call the method to create user entry in the database
+      createUserEntry(
+        member: member,
+      );
     } on FirebaseAuthException catch (e) {
       if (e.code == 'email-already-in-use') {
         errorCode = 'email-already-in-use';
@@ -77,10 +98,10 @@ class FirebaseContorller extends ChangeNotifier {
   }
 
   //Reset password
-  Future <String?> resetPassword(String email) async{
+  Future<String?> resetPassword(String email) async {
     String? resetPasswordErrorCode;
     try {
-       await firebaseAuth.sendPasswordResetEmail(email: email);
+      await firebaseAuth.sendPasswordResetEmail(email: email);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'invalid-email') {
         resetPasswordErrorCode = e.code;
@@ -102,4 +123,47 @@ class FirebaseContorller extends ChangeNotifier {
   // void changeEmail(String email){
   //   firebaseAuth.currentUser?.verifyBeforeUpdateEmail(email);
   // }
+
+  // Create an user entry in the database
+  void createUserEntry({required Member member}) {
+    //create a reference to the collection
+    final docRef = db.collection('Users').withConverter(
+        //the fromFirestore method transforms data from firestore to our custom object
+        fromFirestore: (doc, _) => Member.fromFirestore(doc, _),
+        //the toFirestore method transforms our custom object to firestore data(map)
+        toFirestore: (Member member, _) => member.toFirestore());
+    docRef.add(member);
+  }
+
+  //Create a sale entry in the database
+  void createSaleEntry(
+      {required String amountSold,
+      required String pamphletsLeft,
+      required DateTime saleDate}) {
+    //create a reference to the collection
+    final colRef = db.collection('Sales').withConverter(
+        //the fromFirestore method transforms data from firestore to our custom object
+        fromFirestore: (doc, _) => Sale.fromFirestore(doc, _),
+        //the toFirestore method transforms our custom object to firestore data(map)
+        toFirestore: (Sale sale, _) => sale.toFirestore());
+    colRef.add(Sale(
+      uid: user?.uid,
+      saleAmount: int.parse(amountSold),
+      pamphletsLeft: int.parse(pamphletsLeft),
+      saleDate: saleDate,
+    ));
+  }
+
+  Stream<QuerySnapshot<Sale>>getSaleRecords() {
+    //create a reference to the collection
+    final colRef = db.collection('Sales').withConverter(
+          fromFirestore: (doc, _) => Sale.fromFirestore(doc, _),
+          toFirestore: (Sale sale, _) => sale.toFirestore(),
+        );
+    
+    //return a stream which listens to the documents in the sales collection
+    colRef.orderBy('saleDate',descending: false).get();
+    return colRef.orderBy('saleDate', descending: true).snapshots();
+
+  }
 }

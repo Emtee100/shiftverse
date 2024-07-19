@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shiftverse/controllers/firebaseController.dart';
+import 'package:shiftverse/widgets/recent_sales.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -45,26 +48,10 @@ class HomeScreen extends StatelessWidget {
               ],
             ),
 
-            SizedBox(
-                height: 300,
-                child: ListView.builder(
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: 3,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.only(bottom: 20),
-                        child: ListTile(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20)),
-                          tileColor: Theme.of(context)
-                              .colorScheme
-                              .surfaceContainerLow,
-                          leading: const Icon(Icons.contact_page),
-                          title: const Text('Pamphlets sold: 4650'),
-                          subtitle: const Text('Remaining pamphlets: 50'),
-                        ),
-                      );
-                    })),
+            ChangeNotifierProvider(
+                create: (context) => FirebaseController(),
+                child: const RecentSales()),
+
             const SizedBox(
               height: 15,
             ),
