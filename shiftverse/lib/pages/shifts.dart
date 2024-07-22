@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shiftverse/controllers/sheetsController.dart';
+import 'package:shiftverse/widgets/shift_list.dart';
 
 class Shifts extends StatelessWidget {
   const Shifts({super.key});
@@ -94,31 +97,35 @@ class Shifts extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 15,),
-            SizedBox(
-                height: 800,
-                child: ListView.builder(
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: 10,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.only(bottom: 20),
-                        child: ListTile(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20)),
-                            tileColor: Theme.of(context)
-                                .colorScheme
-                                .surfaceContainerLow,
-                            leading: const Icon(Icons.contact_page),
-                            title: const Text('Jumuiya: St.Sylvester'),
-                            subtitle: const Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text('Mark Thomas'),
-                                Text('Mary Akinyi')
-                              ],
-                            )),
-                      );
-                    })),
+
+            ChangeNotifierProvider(
+              create: (context)=> SheetsController(),
+              child: const ShiftList()),
+            // SizedBox(
+            //     height: 800,
+            //     child: ListView.builder(
+            //         physics: const NeverScrollableScrollPhysics(),
+            //         itemCount: 10,
+            //         itemBuilder: (context, index) {
+            //           return Padding(
+            //             padding: const EdgeInsets.only(bottom: 20),
+            //             child: ListTile(
+            //                 shape: RoundedRectangleBorder(
+            //                     borderRadius: BorderRadius.circular(20)),
+            //                 tileColor: Theme.of(context)
+            //                     .colorScheme
+            //                     .surfaceContainerLow,
+            //                 leading: const Icon(Icons.contact_page),
+            //                 title: const Text('Jumuiya: St.Sylvester'),
+            //                 subtitle: const Column(
+            //                   crossAxisAlignment: CrossAxisAlignment.start,
+            //                   children: [
+            //                     Text('Mark Thomas'),
+            //                     Text('Mary Akinyi')
+            //                   ],
+            //                 )),
+            //           );
+            //         })),
           ],
         ),
       ),
