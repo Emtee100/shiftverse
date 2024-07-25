@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:shiftverse/controllers/sheetsController.dart';
 
 class ShiftList extends StatefulWidget {
-  const ShiftList({super.key});
+  const ShiftList({super.key, required this.sheet});
+  final SheetsController sheet;
 
   @override
   State<ShiftList> createState() => _ShiftListState();
@@ -12,45 +12,58 @@ class ShiftList extends StatefulWidget {
 class _ShiftListState extends State<ShiftList> {
   @override
   Widget build(BuildContext context) {
-    return Consumer<SheetsController>(
-        builder: (context, value, child) => SizedBox(
-              height: 700,
-              child: FutureBuilder(
-                future: value.retrieveShiftData(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else if (snapshot.connectionState == ConnectionState.done) {
-                    return ListView.builder(
-                        itemCount: snapshot.data!.length,
-                        itemBuilder: (context, index) {
-                          return ListTile(
-                              leading: const Icon(Icons.access_time),
-                              title: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Text('Leaders on duty:'),
-                                  Text(
-                                    snapshot.data![index][2],
-                                  ),
-                                  Text(
-                                    snapshot.data![index][3],
-                                  ),
-                                  Text(
-                                    'Date: ${snapshot.data![index][0]}',
-                                  ),
-                                  Text('Jumuiya: ${snapshot.data![index][4]}'),
-                                ],
-                              ));
-                        });
-                  } else if (snapshot.hasError) {
-                    return const Center(
-                        child: Text('An error occurred while retrieving data'));
-                  } else {
-                    return const Text('Null');
-                  }
-                },
-              ),
-            ));
+    return SizedBox(
+      height: 700,
+      child: FutureBuilder(
+        future: widget.sheet.filterByJumuiya(widget.sheet.selectedjumus),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.data!.isEmpty) {
+            return const Text('Select a filter to view shifts');
+          } else if (snapshot.hasData) {
+            return ListView.builder(
+                itemCount: snapshot.data!.length,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 20),
+                    child: ListTile(
+                        leading: const Icon(Icons.access_time),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10)),
+                        tileColor:
+                            Theme.of(context).colorScheme.surfaceContainerHigh,
+                        title: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text('Leaders on duty:'),
+                            Row(
+                              children: [
+                                Text(
+                                  '1. ${snapshot.data![index][2]}',
+                                ),
+                                const SizedBox(width: 10),
+                                Text(
+                                  '2. ${snapshot.data![index][3]}',
+                                ),
+                              ],
+                            ),
+                            Text(
+                              'Date: ${snapshot.data![index][0]}',
+                            ),
+                            Text('Jumuiya: ${snapshot.data![index][4]}'),
+                          ],
+                        )),
+                  );
+                });
+          } else if (snapshot.hasError) {
+            return const Center(
+                child: Text('An error occurred while retrieving data'));
+          } else {
+            return const Text('Null');
+          }
+        },
+      ),
+    );
   }
 }
