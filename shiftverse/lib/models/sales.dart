@@ -2,8 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Sale {
   final String? uid;
-  final int saleAmount;
-  final int pamphletsLeft;
+  final double saleAmount;
+  final double pamphletsLeft;
   final DateTime saleDate;
 
   Sale(
@@ -19,7 +19,7 @@ class Sale {
       uid: saleData!['uid'],
       saleAmount: saleData['saleAmount'],
       pamphletsLeft: saleData['pamphletsLeft'],
-      saleDate: saleData['saleDate'],
+      saleDate: (saleData['saleDate']).toDate(),
     );
   }
 

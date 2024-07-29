@@ -22,26 +22,37 @@ class _RecentSalesState extends State<RecentSales> {
                     height: 330,
                     child: Center(child: CircularProgressIndicator()));
               } else if (snapshot.hasData) {
-                return SizedBox(
-                    height: 330,
-                    child: ListView(
-                        physics: const NeverScrollableScrollPhysics(),
-                        children: snapshot.data!.docs.map((doc) {
-                          final String formattedDate = DateFormat('dd-MM-yyyy')
-                              .format(doc['saleDate'].toDate());
-                          return ListTile(
-                            leading: const Icon(Icons.wallet),
-                            title: Text('Pamphlets sold: ${doc['saleAmount']}'),
-                            subtitle: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                    'Remaining pamphlets: ${doc['pamphletsLeft']}'),
-                                Text('Date sold: $formattedDate')
-                              ],
-                            ),
-                          );
-                        }).toList()));
+                if (snapshot.data!.docs.isEmpty) {
+                  return const SizedBox(
+                    height: 300,
+                    child: Center(
+                      child: Text('No data has been entered yet'),
+                    ),
+                  );
+                } else {
+                  return SizedBox(
+                      height: 330,
+                      child: ListView(
+                          physics: const NeverScrollableScrollPhysics(),
+                          children: snapshot.data!.docs.map((doc) {
+                            final String formattedDate =
+                                DateFormat('dd-MM-yyyy')
+                                    .format(doc['saleDate'].toDate());
+                            return ListTile(
+                              leading: const Icon(Icons.wallet),
+                              title:
+                                  Text('Pamphlets sold: ${doc['saleAmount']}'),
+                              subtitle: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                      'Remaining pamphlets: ${doc['pamphletsLeft']}'),
+                                  Text('Date sold: $formattedDate')
+                                ],
+                              ),
+                            );
+                          }).toList()));
+                }
               } else if (snapshot.hasError) {
                 return Text(
                   'Error in obtaining sales',

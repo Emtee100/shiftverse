@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shiftverse/controllers/firebaseController.dart';
 import 'package:shiftverse/widgets/recent_sales.dart';
+import 'package:shiftverse/widgets/sales_charts.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -28,9 +29,18 @@ class HomeScreen extends StatelessWidget {
 
             //Chart section
 
-            const Placeholder(
-              fallbackHeight: 150,
-            ),
+            Container(
+              padding: const EdgeInsets.only(bottom: 10,top: 10, left: 10, right: 25),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.surfaceContainerHigh,
+                  borderRadius: BorderRadius.circular(20)
+                ),
+                height: 250,
+                width: 300,
+                child: ChangeNotifierProvider(
+                  create: (context) => FirebaseController(),
+                  child: const ChartSales())),
+
             const SizedBox(
               height: 15,
             ),

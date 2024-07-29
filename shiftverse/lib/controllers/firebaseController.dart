@@ -148,8 +148,8 @@ class FirebaseController extends ChangeNotifier {
         toFirestore: (Sale sale, _) => sale.toFirestore());
     colRef.add(Sale(
       uid: user?.uid,
-      saleAmount: int.parse(amountSold),
-      pamphletsLeft: int.parse(pamphletsLeft),
+      saleAmount: double.parse(amountSold),
+      pamphletsLeft: double.parse(pamphletsLeft),
       saleDate: saleDate,
     ));
   }
@@ -162,7 +162,6 @@ class FirebaseController extends ChangeNotifier {
         );
     
     //return a stream which listens to the documents in the sales collection
-    colRef.orderBy('saleDate',descending: false).get();
     return colRef.orderBy('saleDate', descending: true).snapshots();
 
   }
