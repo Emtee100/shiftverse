@@ -8,28 +8,7 @@ class Shifts extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 25),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: 15),
-            Text(
-              'Shifts',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-            const SizedBox(height: 15),
-            ChangeNotifierProvider(
-                create: (context) => SheetsController(),
-                child: const Filters()),
-            const SizedBox(
-              height: 15,
-            ),
-          ],
-        ),
-      ),
-    ));
+    return ChangeNotifierProvider(
+        create: (context) => SheetsController(), child: const Filters());
   }
 }

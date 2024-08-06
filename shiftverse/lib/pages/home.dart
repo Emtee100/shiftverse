@@ -11,8 +11,10 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         body: SingleChildScrollView(
+      physics: const BouncingScrollPhysics(
+          decelerationRate: ScrollDecelerationRate.fast),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 25),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -28,18 +30,24 @@ class HomeScreen extends StatelessWidget {
             ),
 
             //Chart section
-
+            Align(
+                alignment: Alignment.center,
+                child: Text(
+                  'Monthly Pamphlet Sales',
+                  style: Theme.of(context).textTheme.headlineSmall,
+                )),
             Container(
-              padding: const EdgeInsets.only(bottom: 10,top: 10, left: 10, right: 25),
-                decoration: BoxDecoration(
+              padding: const EdgeInsets.only(
+                  bottom: 10, top: 10, left: 5, right: 5),
+              decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.surfaceContainerHigh,
-                  borderRadius: BorderRadius.circular(20)
-                ),
-                height: 250,
-                width: 300,
-                child: ChangeNotifierProvider(
+                  borderRadius: BorderRadius.circular(20)),
+              height: 300,
+              //width: 300,
+              child: ChangeNotifierProvider(
                   create: (context) => FirebaseController(),
-                  child: const ChartSales())),
+                  child: const ChartSales()),
+            ),
 
             const SizedBox(
               height: 15,

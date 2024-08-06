@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+//import 'package:intl/intl.dart';
 import 'package:shiftverse/models/sales.dart';
 import 'package:shiftverse/models/user.dart';
 
@@ -154,15 +155,36 @@ class FirebaseController extends ChangeNotifier {
     ));
   }
 
-  Stream<QuerySnapshot<Sale>>getSaleRecords() {
+  Stream<QuerySnapshot<Sale>> getSaleRecords() {
     //create a reference to the collection
     final colRef = db.collection('Sales').withConverter(
           fromFirestore: (doc, _) => Sale.fromFirestore(doc, _),
           toFirestore: (Sale sale, _) => sale.toFirestore(),
         );
-    
+
     //return a stream which listens to the documents in the sales collection
     return colRef.orderBy('saleDate', descending: true).snapshots();
+  }
 
+  //Stream<QuerySnapshot<Sale>>
+  Stream<QuerySnapshot<Sale>> getMonthlySaleRecords() {
+    //create a reference to the collection
+    final colRef = db.collection('Sales').withConverter(
+          fromFirestore: (doc, _) => Sale.fromFirestore(doc, _),
+          toFirestore: (Sale sale, _) => sale.toFirestore(),
+        );
+
+    //obtain the current month in string format
+    DateTime now = DateTime.now();
+    DateTime startOfMonth = DateTime(now.year, now.month, 1);
+    DateTime endOfMonth = DateTime(now.year, now.month + 1, 1);
+
+    //return a stream containing sale records which are for the current month
+
+    return colRef
+        .orderBy('saleDate', descending: true)
+        .where('saleDate', isGreaterThanOrEqualTo: startOfMonth)
+        .where('saleDate', isLessThan: endOfMonth)
+        .snapshots();
   }
 }
