@@ -26,22 +26,15 @@ class _ChartSalesState extends State<ChartSales> {
                 List<QueryDocumentSnapshot<Sale>> salesRecords =
                     snapshot.data!.docs;
                 List<FlSpot> saleSpots = [];
-                List<FlSpot> remainingPamphletSpots = [];
-                print(salesRecords);
+
                 for (final saleRecord in salesRecords) {
-                  print(saleRecord);
                   Sale saleData = saleRecord.data();
 
                   saleSpots.add(FlSpot(
                       saleData.saleDate.millisecondsSinceEpoch.toDouble(),
                       saleData.saleAmount));
-                  remainingPamphletSpots.add(FlSpot(
-                      saleData.saleDate.millisecondsSinceEpoch.toDouble(),
-                      saleData.pamphletsLeft));
                 }
-                return LineChart(
-                  
-                  LineChartData(
+                return LineChart(LineChartData(
                     borderData: FlBorderData(
                         show: true,
                         border: Border(
@@ -55,7 +48,8 @@ class _ChartSalesState extends State<ChartSales> {
                     gridData: const FlGridData(
                       show: false,
                     ),
-                    //minY: 3000,
+                    minY: 0,
+                    maxY: 5000,
                     maxX: salesRecords.first
                         .data()
                         .saleDate
@@ -88,7 +82,7 @@ class _ChartSalesState extends State<ChartSales> {
                                     .fontSize);
                             return LineTooltipItem(
                                 """Pamphlets sold: $pamphletsSold
-                                Date sold: $dateSold""", textStyle);
+                                  Date sold: $dateSold""", textStyle);
                           }).toList();
                         },
                       ),
@@ -103,6 +97,7 @@ class _ChartSalesState extends State<ChartSales> {
                           sideTitles: SideTitles(
                             reservedSize: 42,
                             showTitles: true,
+                            interval: 1000,
                             getTitlesWidget: (value, meta) {
                               int formattedValue = value.toInt();
                               return SideTitleWidget(
@@ -116,14 +111,8 @@ class _ChartSalesState extends State<ChartSales> {
                           )),
                       topTitles: const AxisTitles(
                           sideTitles: SideTitles(showTitles: false)),
-                      rightTitles: AxisTitles(
-                          sideTitles: SideTitles(
-                              showTitles: false,
-                              getTitlesWidget: (value, meta) {
-                                return SideTitleWidget(
-                                    child: Text('$value'),
-                                    axisSide: meta.axisSide);
-                              })),
+                      rightTitles: const AxisTitles(
+                          sideTitles: SideTitles(showTitles: false)),
                       bottomTitles: AxisTitles(
                           axisNameWidget: Text(
                             'Date sold',
@@ -165,10 +154,10 @@ class _ChartSalesState extends State<ChartSales> {
                         color: Theme.of(context).colorScheme.primary,
                         spots: saleSpots,
                       ),
-                      LineChartBarData(
-                        spots: remainingPamphletSpots,
-                        color: Theme.of(context).colorScheme.error,
-                      )
+                      // LineChartBarData(
+                      //   spots: remainingPamphletSpots,
+                      //   color: Theme.of(context).colorScheme.error,
+                      // )
                     ]));
               } else if (snapshot.hasError) {
                 return Text(

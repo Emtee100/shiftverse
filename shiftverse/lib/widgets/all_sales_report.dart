@@ -14,34 +14,41 @@ class _AllSalesReportState extends State<AllSalesReport> {
   @override
   Widget build(BuildContext context) {
     return Consumer<FirebaseController>(
-      builder: (context, value, child)=>StreamBuilder(
-        stream: value.getSaleRecords(), 
-        builder: (context, snapshot) {
+        builder: (context, value, child) => StreamBuilder(
+            stream: value.getSaleRecords(),
+            builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return const SizedBox(
-                    height: 330,
-                    child: Center(child: CircularProgressIndicator()));
+                return SliverToBoxAdapter(
+                    child: const Center(child: CircularProgressIndicator()));
               } else if (snapshot.hasData) {
-                return SizedBox(
-                    height: 800,
-                    child: ListView(
-                        physics: const NeverScrollableScrollPhysics(),
-                        children: snapshot.data!.docs.map((doc) {
-                          final String formattedDate = DateFormat('dd-MM-yyyy')
-                              .format(doc['saleDate'].toDate());
-                          return ListTile(
-                            leading: const Icon(Icons.wallet),
-                            title: Text('Pamphlets sold: ${doc['saleAmount']}'),
-                            subtitle: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                    'Remaining pamphlets: ${doc['pamphletsLeft']}'),
-                                Text('Date sold: $formattedDate')
-                              ],
-                            ),
-                          );
-                        }).toList()));
+                return SliverList(
+                    delegate: SliverChildBuilderDelegate(
+                        childCount: snapshot.data!.docs.length,
+                        (context, index) {
+                  List<String> formattedDates = [];
+                  for (final doc in snapshot.data!.docs) {
+                    final String formattedDate = DateFormat('dd-MM-yyyy')
+                        .format(doc['saleDate'].toDate());
+                    formattedDates.add(formattedDate);
+                  }
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 25,vertical: 10),
+                    child: ListTile(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10)),
+                      tileColor: Theme.of(context).colorScheme.surfaceContainerHigh,
+                        leading: const Icon(Icons.wallet),
+                        title: Text(
+                            'Pamphlets sold: ${snapshot.data!.docs[index]['saleAmount']}'),
+                        subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                  'Remaining pamphlets: ${snapshot.data!.docs[index]['pamphletsLeft']}'),
+                              Text('Date sold: ${formattedDates[index]}'),
+                            ])),
+                  );
+                }));
               } else if (snapshot.hasError) {
                 return Text(
                   'Error in obtaining sales',
@@ -50,9 +57,6 @@ class _AllSalesReportState extends State<AllSalesReport> {
               } else {
                 return const Text('null');
               }
-            })
-      
-      );
+            }));
   }
 }
-
