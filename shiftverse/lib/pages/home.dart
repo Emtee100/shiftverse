@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shiftverse/controllers/firebaseController.dart';
+import 'package:shiftverse/controllers/sheetsController.dart';
 import 'package:shiftverse/widgets/recent_sales.dart';
 import 'package:shiftverse/widgets/sales_charts.dart';
+import 'package:shiftverse/widgets/upcoming_shifts.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -37,8 +39,8 @@ class HomeScreen extends StatelessWidget {
                   style: Theme.of(context).textTheme.headlineSmall,
                 )),
             Container(
-              padding: const EdgeInsets.only(
-                  bottom: 10, top: 10, left: 5, right: 5),
+              padding:
+                  const EdgeInsets.only(bottom: 10, top: 10, left: 5, right: 5),
               decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.surfaceContainerHigh,
                   borderRadius: BorderRadius.circular(20)),
@@ -87,31 +89,9 @@ class HomeScreen extends StatelessWidget {
               ],
             ),
 
-            SizedBox(
-                height: 300,
-                child: ListView.builder(
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: 3,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.only(bottom: 20),
-                        child: ListTile(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20)),
-                            tileColor: Theme.of(context)
-                                .colorScheme
-                                .surfaceContainerLow,
-                            leading: const Icon(Icons.contact_page),
-                            title: const Text('Jumuiya: St.Sylvester'),
-                            subtitle: const Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text('Mark Thomas'),
-                                Text('Mary Akinyi')
-                              ],
-                            )),
-                      );
-                    })),
+            ChangeNotifierProvider(
+                create: (context) => SheetsController(),
+                child: const UpcomingShifts())
           ],
         ),
       ),

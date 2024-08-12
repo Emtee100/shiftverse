@@ -17,8 +17,8 @@ class Sale {
     final saleData = saleDoc.data();
     return Sale(
       uid: saleData!['uid'],
-      saleAmount: saleData['saleAmount'],
-      pamphletsLeft: saleData['pamphletsLeft'],
+      saleAmount: (saleData['saleAmount']).toDouble(),
+      pamphletsLeft: (saleData['pamphletsLeft']).toDouble(),
       saleDate: (saleData['saleDate']).toDate(),
     );
   }
