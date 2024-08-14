@@ -1,6 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
+import 'package:shiftverse/controllers/firebaseController.dart';
+import 'package:shiftverse/widgets/profile_card.dart';
 
 class Profile extends StatelessWidget {
   const Profile({super.key});
@@ -25,27 +28,16 @@ class Profile extends StatelessWidget {
 
             Row(
               children: [
-                Icon(
+                const Icon(
                   Icons.account_circle_rounded,
                   size: 70,
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 20,
                 ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Mark Thomas',
-                      style: Theme.of(context).textTheme.titleMedium,
-                    ),
-                    Text(
-                      'St. Sylvester',
-                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                          color: Theme.of(context).colorScheme.onSurface),
-                    ),
-                    Text('markthomaskahiga@gmail.com'),
-                  ],
+               ChangeNotifierProvider(
+                create: (context)=>FirebaseController(),
+                builder: (context, child) => const ProfileCard(),
                 )
               ],
             ),

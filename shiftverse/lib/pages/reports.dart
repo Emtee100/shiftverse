@@ -12,9 +12,7 @@ class Reports extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        CustomScrollView(
-          physics: const BouncingScrollPhysics(),
-          slivers: [
+        CustomScrollView(physics: const BouncingScrollPhysics(), slivers: [
           SliverToBoxAdapter(
               child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 25),
@@ -26,12 +24,12 @@ class Reports extends StatelessWidget {
                 style: Theme.of(context).textTheme.headlineMedium,
               ),
               const SizedBox(height: 15),
-               Align(
-                alignment: Alignment.center,
-                child: Text(
-                  'Monthly Pamphlet Sales',
-                  style: Theme.of(context).textTheme.headlineSmall,
-                )),
+              Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    'Monthly Pamphlet Sales',
+                    style: Theme.of(context).textTheme.headlineSmall,
+                  )),
               Container(
                 padding: const EdgeInsets.only(
                     bottom: 10, top: 10, left: 5, right: 5),
@@ -103,37 +101,5 @@ class Reports extends StatelessWidget {
         ),
       ],
     );
-
-    // Scaffold(
-    //   body: SingleChildScrollView(
-    // child: Padding(
-    //   padding: const EdgeInsets.symmetric(horizontal: 25),
-    //   child:
-    //       Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-    //     const SizedBox(height: 15),
-    //     Text(
-    //       'Sales Report',
-    //       style: Theme.of(context).textTheme.headlineMedium,
-    //     ),
-    //     const SizedBox(height: 15),
-    //     const Placeholder(
-    //       fallbackHeight: 150,
-    //     ),
-    //     const SizedBox(height: 15),
-    //     Text(
-    //       'Sales',
-    //       style: Theme.of(context).textTheme.titleMedium,
-    //     ),
-    // ChangeNotifierProvider(
-    //   create: (context) => FirebaseController(),
-    //   child: const AllSalesReport()),
-    //         const SizedBox(
-    //           height: 15,
-    //         ),
-    //       ]),
-    //     ),
-    //   ),
-
-    // );
   }
 }

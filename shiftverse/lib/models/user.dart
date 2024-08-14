@@ -1,13 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Member {
-  final String? uid;
+  final String? userId;
   final String fullNames;
   final String email;
   final String jumuiya;
 
   Member(
-      {required this.uid,
+      {required this.userId,
       required this.fullNames,
       required this.email,
       required this.jumuiya});
@@ -16,7 +16,7 @@ class Member {
       DocumentSnapshot<Map<String, dynamic>> doc, SnapshotOptions? options) {
     final docData = doc.data();
     return Member(
-        uid: docData!['uid'],
+        userId: docData!['userId'],
         fullNames: docData['fullNames'],
         email: docData['email'],
         jumuiya: docData['jumuiya']);
@@ -24,7 +24,7 @@ class Member {
 
   Map<String, String> toFirestore() {
     return {
-      if (uid != null) 'uid': uid!,
+      if (userId != null) 'userId': userId!,
       'fullNames': fullNames,
       'email': email,
       'jumuiya': jumuiya,

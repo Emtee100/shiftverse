@@ -1,4 +1,7 @@
+import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:shiftverse/Routes/router.dart';
 import 'package:shiftverse/Themes/theme.dart';
@@ -9,6 +12,16 @@ Future <void> main() async{
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  await FirebaseAppCheck.instance.activate(
+    androidProvider: AndroidProvider.debug
+    );
+  FlutterError.onError = (errorDetails){
+    FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
+  };
+  PlatformDispatcher.instance.onError = (error,stack){
+    FirebaseCrashlytics.instance.recordError(error, stack);
+    return true;
+  };
   runApp(const MyApp());
 }
 

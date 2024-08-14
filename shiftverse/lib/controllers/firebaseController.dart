@@ -51,7 +51,7 @@ class FirebaseController extends ChangeNotifier {
       //creating user entry in cloud firestore
       //create user object
       Member member = Member(
-        uid: userCredential.user?.uid,
+        userId: userCredential.user?.uid,
         fullNames: fullNames,
         email: email,
         jumuiya: jumuiya,
@@ -133,7 +133,7 @@ class FirebaseController extends ChangeNotifier {
         fromFirestore: (doc, _) => Member.fromFirestore(doc, _),
         //the toFirestore method transforms our custom object to firestore data(map)
         toFirestore: (Member member, _) => member.toFirestore());
-    docRef.add(member);
+    docRef.doc(member.userId).set(member);
   }
 
   //Create a sale entry in the database
@@ -164,6 +164,16 @@ class FirebaseController extends ChangeNotifier {
 
     //return a stream which listens to the documents in the sales collection
     return colRef.orderBy('saleDate', descending: true).snapshots();
+  }
+
+  Future<DocumentSnapshot<Member>>getUserRecord(){
+
+    final colRef = db.collection('Users').withConverter(
+      fromFirestore: (doc,_)=>Member.fromFirestore(doc,_), 
+      toFirestore: (Member member,_)=>member.toFirestore(),
+    );
+    // ignore: unnecessary_string_interpolations
+    return colRef.doc("${user!.uid}").get();
   }
 
   //Stream<QuerySnapshot<Sale>>
