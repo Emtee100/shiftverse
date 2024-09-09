@@ -57,15 +57,9 @@ class HomeScreen extends StatelessWidget {
 
             //Recent Sales section
 
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Recent Sales',
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-                TextButton(onPressed: () {}, child: const Text('See all'))
-              ],
+            Text(
+              'Recent Sales',
+              style: Theme.of(context).textTheme.titleMedium,
             ),
 
             ChangeNotifierProvider(
@@ -78,15 +72,9 @@ class HomeScreen extends StatelessWidget {
 
             //Upcoming shifts
 
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Upcoming Shifts',
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-                TextButton(onPressed: () {}, child: const Text('See all'))
-              ],
+            Text(
+              'Upcoming Shifts',
+              style: Theme.of(context).textTheme.titleMedium,
             ),
 
             ChangeNotifierProvider(

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:shiftverse/controllers/firebaseController.dart';
-import 'package:shiftverse/widgets/google_sign_in_button.dart';
+//import 'package:shiftverse/widgets/google_sign_in_button.dart';
 import 'package:shiftverse/widgets/signinform.dart';
 
 class SignInPortrait extends StatelessWidget {
@@ -56,9 +56,9 @@ class SignInPortrait extends StatelessWidget {
                   ),
               
                   // google sign in button
-                  ChangeNotifierProvider(
-                    create: (context)=>FirebaseController(),
-                    child: const GoogleSignInButton()),
+                  // ChangeNotifierProvider(
+                  //   create: (context)=>FirebaseController(),
+                  //   child: const GoogleSignInButton()),
 
                   const SizedBox(
                     height: 20,
