@@ -58,19 +58,19 @@ class Profile extends StatelessWidget {
                 onPressed: () async {
                   String? token = await FirebaseMessaging.instance.getToken();
                   print(token);
-                  try {
-                    await FirebaseFunctions.instance
-                        .httpsCallable('sendShiftNotification')
-                        .call(<String, String?>{
-                      "token": token,
-                    }).then((result) {
-                      print(result);
-                    });
-                  } on FirebaseFunctionsException catch (error) {
-                    print(error.code);
-                    print(error.details);
-                    print(error.message);
-                  }
+                  // try {
+                  //   await FirebaseFunctions.instance
+                  //       .httpsCallable('sendShiftNotification')
+                  //       .call(<String, String?>{
+                  //     "token": token,
+                  //   }).then((result) {
+                  //     print(result);
+                  //   });
+                  // } on FirebaseFunctionsException catch (error) {
+                  //   print(error.code);
+                  //   print(error.details);
+                  //   print(error.message);
+                  // }
                   // FirebaseAuth.instance.signOut();
                   // context.go('/');
                 },

@@ -5,12 +5,17 @@ class Member {
   final String fullNames;
   final String email;
   final String jumuiya;
+  final String? fcmToken;
+  final Timestamp tokenTimestamp;
 
-  Member(
-      {required this.userId,
-      required this.fullNames,
-      required this.email,
-      required this.jumuiya});
+  Member({
+    required this.userId,
+    required this.fullNames,
+    required this.email,
+    required this.jumuiya,
+    required this.fcmToken,
+    required this.tokenTimestamp
+  });
 
   factory Member.fromFirestore(
       DocumentSnapshot<Map<String, dynamic>> doc, SnapshotOptions? options) {
@@ -19,15 +24,19 @@ class Member {
         userId: docData!['userId'],
         fullNames: docData['fullNames'],
         email: docData['email'],
-        jumuiya: docData['jumuiya']);
+        jumuiya: docData['jumuiya'],
+        fcmToken: docData['fcmToken'],
+        tokenTimestamp: docData['tokenTimestamp']);
   }
 
-  Map<String, String> toFirestore() {
+  Map<String, dynamic> toFirestore() {
     return {
-      if (userId != null) 'userId': userId!,
+      if (userId != null && fcmToken != null) 'userId': userId!,
       'fullNames': fullNames,
       'email': email,
       'jumuiya': jumuiya,
+      'fcmToken': fcmToken!,
+      'tokenTimestamp': tokenTimestamp
     };
   }
 }

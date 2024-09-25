@@ -6,8 +6,23 @@ import 'package:shiftverse/widgets/recent_sales.dart';
 import 'package:shiftverse/widgets/sales_charts.dart';
 import 'package:shiftverse/widgets/upcoming_shifts.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void initState() {
+    // Check whether existing user record has the fcmToken and tokenTimestamp fields and update them if they don't exist
+    FirebaseController().hasFcmTokenAndTimestamp();
+
+    // Ensure that the device token gotten from the device and the one in the database are the same
+    FirebaseController().updateToken();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

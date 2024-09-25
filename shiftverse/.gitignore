@@ -47,3 +47,4 @@ lib/controllers/sheetsController.dart
 
 # Firebase config
 /android/app/google-services.json
+/lib/cloud_functions/node_modules

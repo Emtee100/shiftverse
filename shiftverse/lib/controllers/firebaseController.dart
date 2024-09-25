@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 //import 'package:intl/intl.dart';
@@ -48,14 +50,18 @@ class FirebaseController extends ChangeNotifier {
       //send email verification
       sendEmailVerification(userCredential);
 
+      // get the fcmToken of the device at sign up
+      String? fcmToken = await FirebaseMessaging.instance.getToken();
+      
       //creating user entry in cloud firestore
       //create user object
       Member member = Member(
-        userId: userCredential.user?.uid,
-        fullNames: fullNames,
-        email: email,
-        jumuiya: jumuiya,
-      );
+          userId: userCredential.user?.uid,
+          fullNames: fullNames,
+          email: email,
+          jumuiya: jumuiya,
+          fcmToken: fcmToken,
+          tokenTimestamp: FieldValue.serverTimestamp() as Timestamp);
 
       //call the method to create user entry in the database
       createUserEntry(
@@ -166,12 +172,11 @@ class FirebaseController extends ChangeNotifier {
     return colRef.orderBy('saleDate', descending: true).snapshots();
   }
 
-  Future<DocumentSnapshot<Member>>getUserRecord(){
-
+  Future<DocumentSnapshot<Member>> getUserRecord() {
     final colRef = db.collection('Users').withConverter(
-      fromFirestore: (doc,_)=>Member.fromFirestore(doc,_), 
-      toFirestore: (Member member,_)=>member.toFirestore(),
-    );
+          fromFirestore: (doc, _) => Member.fromFirestore(doc, _),
+          toFirestore: (Member member, _) => member.toFirestore(),
+        );
     // ignore: unnecessary_string_interpolations
     return colRef.doc("${user!.uid}").get();
   }
@@ -184,17 +189,49 @@ class FirebaseController extends ChangeNotifier {
           toFirestore: (Sale sale, _) => sale.toFirestore(),
         );
 
-    //obtain the current month in string format
+    // Obtain the current month in string format
     DateTime now = DateTime.now();
     DateTime startOfMonth = DateTime(now.year, now.month, 1);
     DateTime endOfMonth = DateTime(now.year, now.month + 1, 1);
 
-    //return a stream containing sale records which are for the current month
+    // Return a stream containing sale records which are for the current month
 
     return colRef
         .orderBy('saleDate', descending: true)
         .where('saleDate', isGreaterThanOrEqualTo: startOfMonth)
         .where('saleDate', isLessThan: endOfMonth)
         .snapshots();
+  }
+
+  // Update the fcmToken and the Timestamp in the database whenever a change in the token is detected
+  void updateToken() async{
+    try {
+      // Attempt to update the user's document in the "Users" collection with the new FCM token
+      String? newFcmToken = await FirebaseMessaging.instance.getToken();
+      DocumentSnapshot userDoc = await db.collection("Users").doc(user!.uid).get();
+      var docData = userDoc.data() as Map<String,dynamic>;
+      if(newFcmToken != docData["fcmToken"]){
+        db.collection("Users").doc(user!.uid).update(
+         {"fcmToken": newFcmToken, "tokenTimestamp": FieldValue.serverTimestamp()},
+       );
+      }
+    } on FirebaseException catch (error) {
+      // If a FirebaseException occurs, record the error and the current stack trace in Firebase Crashlytics
+      FirebaseCrashlytics.instance.recordError(error, StackTrace.current);
+    }
+  }
+
+  // Check whether an existing user record has fcmToken and tokenTimestamp fields
+  void hasFcmTokenAndTimestamp() async {
+    DocumentSnapshot userDoc =
+        await db.collection("Users").doc(user!.uid).get();
+    var docData = userDoc.data() as Map<String, dynamic>;
+    if (docData['fcmToken'] == null || docData['tokenTimestamp'] == null) {
+      String? fcmToken = await FirebaseMessaging.instance.getToken();
+      db.collection("Users").doc(user!.uid).set({
+        'fcmToken': fcmToken,
+        'tokenTimestamp': FieldValue.serverTimestamp()
+      }, SetOptions(merge: true));
+    }
   }
 }
