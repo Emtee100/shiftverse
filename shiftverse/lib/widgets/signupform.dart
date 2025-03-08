@@ -64,6 +64,7 @@ class _SignUpFormState extends State<SignUpForm> {
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   controller: _nameController,
                   keyboardType: TextInputType.text,
+                  textCapitalization: TextCapitalization.words,
                   decoration: InputDecoration(
                     labelText: 'Full Names',
                     border: OutlineInputBorder(
@@ -130,7 +131,7 @@ class _SignUpFormState extends State<SignUpForm> {
                     if (value == null || value.isEmpty) {
                       return 'Please enter a password';
                     } else if (value != _confirmPasswordController.text) {
-                      return 'Value in password should match with value in confirm password';
+                      return 'Passwords should match';
                     } else {
                       return null;
                     }
@@ -161,7 +162,7 @@ class _SignUpFormState extends State<SignUpForm> {
                     if (value == null || value.isEmpty) {
                       return 'Please enter a password';
                     } else if (value != _passwordController.text) {
-                      return 'The two passwords should match';
+                      return 'Passwords should match';
                     } else {
                       return null;
                     }
@@ -179,7 +180,7 @@ class _SignUpFormState extends State<SignUpForm> {
                             password: _passwordController.text.trim(),
                             fullNames: _nameController.text.trim(),
                             jumuiya: _jumuiyaController.text.trim());
-                        //print(value.errorCode);
+                        print(errorCode);
                         switch (errorCode) {
                           case null:
                             if (context.mounted) {

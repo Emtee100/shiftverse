@@ -46,7 +46,7 @@ class SignUpPortrait extends StatelessWidget {
                                       Theme.of(context).colorScheme.onSurface)),
                       GestureDetector(
                         onTap: () {
-                          context.go('/signin');
+                          context.go('/');
                         },
                         child: RichText(
                             text: TextSpan(

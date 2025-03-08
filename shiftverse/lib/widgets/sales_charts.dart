@@ -22,6 +22,62 @@ class _ChartSalesState extends State<ChartSales> {
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(child: CircularProgressIndicator());
+              } else if (snapshot.data!.docs.isEmpty) {
+                return Stack(
+                  children: [
+                    LineChart(LineChartData(
+                        borderData: FlBorderData(
+                            show: true,
+                            border: Border(
+                                right:
+                                    const BorderSide(color: Colors.transparent),
+                                top:
+                                    const BorderSide(color: Colors.transparent),
+                                left: BorderSide(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onSurface),
+                                bottom: BorderSide(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onSurface))),
+                        gridData: FlGridData(
+                          show: false,
+                        ),
+                        minY: 0,
+                        maxY: 6500,
+                        minX: 0,
+                        titlesData: FlTitlesData(
+                          topTitles: AxisTitles(
+                              sideTitles: SideTitles(showTitles: false)),
+                          rightTitles: AxisTitles(
+                              sideTitles: SideTitles(showTitles: false)),
+                          leftTitles: AxisTitles(
+                              //axisNameSize: 12,
+                              axisNameWidget: Text(
+                                style: Theme.of(context).textTheme.labelSmall,
+                                'Pamphlets sold',
+                              ),
+                              sideTitles: SideTitles(
+                                reservedSize: 42,
+                                showTitles: true,
+                                interval: 1000,
+                                getTitlesWidget: (value, meta) {
+                                  int formattedValue = value.toInt();
+                                  return SideTitleWidget(
+                                    meta: meta,
+                                    child: Text(
+                                      '$formattedValue',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .labelSmall,
+                                    ),
+                                  );
+                                },
+                              )),
+                        ))),
+                  ],
+                );
               } else if (snapshot.hasData) {
                 List<QueryDocumentSnapshot<Sale>> salesRecords =
                     snapshot.data!.docs;
@@ -49,7 +105,7 @@ class _ChartSalesState extends State<ChartSales> {
                       show: false,
                     ),
                     minY: 0,
-                    maxY: 5000,
+                    maxY: 6500,
                     maxX: salesRecords.first
                         .data()
                         .saleDate
@@ -101,7 +157,8 @@ class _ChartSalesState extends State<ChartSales> {
                             getTitlesWidget: (value, meta) {
                               int formattedValue = value.toInt();
                               return SideTitleWidget(
-                                axisSide: meta.axisSide,
+                                meta: meta,
+                                //axisSide: meta.axisSide,
                                 child: Text(
                                   '$formattedValue',
                                   style: Theme.of(context).textTheme.labelSmall,
@@ -138,7 +195,7 @@ class _ChartSalesState extends State<ChartSales> {
                                 fitInside: SideTitleFitInsideData.fromTitleMeta(
                                     meta,
                                     distanceFromEdge: 0),
-                                axisSide: meta.axisSide,
+                                meta: meta,
                                 child: Text(
                                   text,
                                   style: Theme.of(context).textTheme.labelSmall,

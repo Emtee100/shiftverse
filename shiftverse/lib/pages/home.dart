@@ -18,7 +18,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     // Check whether existing user record has the fcmToken and tokenTimestamp fields and update them if they don't exist
     FirebaseController().hasFcmTokenAndTimestamp();
-
+    //final name = FirebaseController().getUserRecord();
     // Ensure that the device token gotten from the device and the one in the database are the same
     FirebaseController().updateToken();
     super.initState();
@@ -33,18 +33,34 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
+          spacing: 15,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(
-              height: 15,
-            ),
-            Text(
-              'Hi, Mark Thomas',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-            const SizedBox(
-              height: 15,
-            ),
+            SizedBox(height: 5),
+            ChangeNotifierProvider(
+                create: (context) => FirebaseController(),
+                builder: (context, value) {
+                  return Consumer<FirebaseController>(
+                      builder: (context, value, child) {
+                    return FutureBuilder(
+                        future: value.getUserRecord(),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const CircularProgressIndicator();
+                          } else if (snapshot.hasError) {
+                            return Text("");
+                          } else {
+                            final String user =
+                                snapshot.data!.data()!.fullNames;
+                            return Text(
+                              "Hi $user",
+                              style: Theme.of(context).textTheme.headlineMedium,
+                            );
+                          }
+                        });
+                  });
+                }),
 
             //Chart section
             Align(
@@ -66,10 +82,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: const ChartSales()),
             ),
 
-            const SizedBox(
-              height: 15,
-            ),
-
             //Recent Sales section
 
             Text(
@@ -80,10 +92,6 @@ class _HomeScreenState extends State<HomeScreen> {
             ChangeNotifierProvider(
                 create: (context) => FirebaseController(),
                 child: const RecentSales()),
-
-            const SizedBox(
-              height: 15,
-            ),
 
             //Upcoming shifts
 

@@ -12,7 +12,7 @@ class SignOutButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<FirebaseController>(
         builder: (context, value, child) => ElevatedButton(
-            onPressed: (){
+            onPressed: ()async{
               value.signOut();
               context.go("/");
             },

@@ -21,7 +21,7 @@ class _UpcomingShiftsState extends State<UpcomingShifts> {
                 height: 380, child: Center(child: CircularProgressIndicator()));
           } else {
             return SizedBox(
-              height: 380,
+              height: 450,
               child: ListView.builder(
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: 3,
@@ -39,17 +39,15 @@ class _UpcomingShiftsState extends State<UpcomingShifts> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const Text('Leaders on duty'),
-                          Row(
-                            children: [
-                              Text('1. ${snapshot.data![index][2]}'),
+                         
+                              Text('1. ${snapshot.data![index][2]}' + ' ${snapshot.data![index][3]}'),
                               const SizedBox(width: 10),
-                              Text('2. ${snapshot.data![index][3]}'),
-                            ],
-                          ),
+                              Text('2. ${snapshot.data![index][4]}' + ' ${snapshot.data![index][5]}'),
+                            
                           Text('Date: ${snapshot.data![index][0]}')
                         ],
                       ),
-                      subtitle: Text('Jumuiya: ${snapshot.data![index][4]}'),
+                      subtitle: Text('Jumuiya: ${snapshot.data![index][6]}'),
                     ),
                   );
                 },

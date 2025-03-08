@@ -73,7 +73,7 @@ class SignInLandscape extends StatelessWidget {
                             color: Theme.of(context).colorScheme.onSurface)),
                     GestureDetector(
                       onTap: () {
-                        context.push('/signup');
+                        context.go('/signup');
                       },
                       child: RichText(
                           text: TextSpan(

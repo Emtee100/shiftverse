@@ -52,20 +52,15 @@ class FirebaseController extends ChangeNotifier {
 
       // get the fcmToken of the device at sign up
       String? fcmToken = await FirebaseMessaging.instance.getToken();
-      
+
       //creating user entry in cloud firestore
-      //create user object
-      Member member = Member(
-          userId: userCredential.user?.uid,
-          fullNames: fullNames,
+      //call the method to create user entry in the database
+      createUserEntry(
+        userId: userCredential.user!.uid,
+        fullNames: fullNames,
           email: email,
           jumuiya: jumuiya,
           fcmToken: fcmToken,
-          tokenTimestamp: FieldValue.serverTimestamp() as Timestamp);
-
-      //call the method to create user entry in the database
-      createUserEntry(
-        member: member,
       );
     } on FirebaseAuthException catch (e) {
       if (e.code == 'email-already-in-use') {
@@ -132,14 +127,17 @@ class FirebaseController extends ChangeNotifier {
   // }
 
   // Create an user entry in the database
-  void createUserEntry({required Member member}) {
+  void createUserEntry({required String? userId, required String fullNames, required String email, required String jumuiya, required String? fcmToken}) {
     //create a reference to the collection
     final docRef = db.collection('Users').withConverter(
         //the fromFirestore method transforms data from firestore to our custom object
         fromFirestore: (doc, _) => Member.fromFirestore(doc, _),
         //the toFirestore method transforms our custom object to firestore data(map)
         toFirestore: (Member member, _) => member.toFirestore());
-    docRef.doc(member.userId).set(member);
+
+    // create a member object
+    final newMember = Member(userId: userId,fullNames: fullNames, email: email, jumuiya: jumuiya, fcmToken: fcmToken, tokenTimestamp: Timestamp.now());
+    docRef.doc(newMember.userId).set(newMember);
   }
 
   //Create a sale entry in the database
@@ -204,16 +202,20 @@ class FirebaseController extends ChangeNotifier {
   }
 
   // Update the fcmToken and the Timestamp in the database whenever a change in the token is detected
-  void updateToken() async{
+  void updateToken() async {
     try {
       // Attempt to update the user's document in the "Users" collection with the new FCM token
       String? newFcmToken = await FirebaseMessaging.instance.getToken();
-      DocumentSnapshot userDoc = await db.collection("Users").doc(user!.uid).get();
-      var docData = userDoc.data() as Map<String,dynamic>;
-      if(newFcmToken != docData["fcmToken"]){
+      DocumentSnapshot userDoc =
+          await db.collection("Users").doc(user!.uid).get();
+      var docData = userDoc.data() as Map<String, dynamic>;
+      if (newFcmToken != docData["fcmToken"]) {
         db.collection("Users").doc(user!.uid).update(
-         {"fcmToken": newFcmToken, "tokenTimestamp": FieldValue.serverTimestamp()},
-       );
+          {
+            "fcmToken": newFcmToken,
+            "tokenTimestamp": Timestamp.now(),
+          },
+        );
       }
     } on FirebaseException catch (error) {
       // If a FirebaseException occurs, record the error and the current stack trace in Firebase Crashlytics
@@ -230,7 +232,7 @@ class FirebaseController extends ChangeNotifier {
       String? fcmToken = await FirebaseMessaging.instance.getToken();
       db.collection("Users").doc(user!.uid).set({
         'fcmToken': fcmToken,
-        'tokenTimestamp': FieldValue.serverTimestamp()
+        'tokenTimestamp': Timestamp.now(),
       }, SetOptions(merge: true));
     }
   }

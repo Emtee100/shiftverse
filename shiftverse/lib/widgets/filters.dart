@@ -15,6 +15,8 @@ class _FiltersState extends State<Filters> {
   bool stPerpetuaFilter = true;
   bool stMarcellino = false;
   bool stSylvester = false;
+  bool stAchille = false;
+  bool fellowShip = false;
 
   @override
   Widget build(BuildContext context) {
@@ -121,6 +123,64 @@ class _FiltersState extends State<Filters> {
                               value.addJumuiya('ST SYLVESTER');
                             } else {
                               value.removeJumuiya('ST SYLVESTER');
+                            }
+                          },
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 20),
+                        child: FilterChip(
+                          showCheckmark: stAchille ? true : false,
+                          backgroundColor: stAchille
+                              ? Theme.of(context).colorScheme.tertiary
+                              : Theme.of(context).colorScheme.secondary,
+                          label: Text(
+                            'St. Achille',
+                            style: Theme.of(context)
+                                .textTheme
+                                .labelMedium!
+                                .copyWith(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onSecondary),
+                          ),
+                          onSelected: (_) {
+                            setState(() {
+                              stAchille = !stAchille;
+                            });
+                            if (stAchille == true) {
+                              value.addJumuiya('ST ACHILLE');
+                            } else {
+                              value.removeJumuiya('ST ACHILLE');
+                            }
+                          },
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 20),
+                        child: FilterChip(
+                          showCheckmark: fellowShip ? true : false,
+                          backgroundColor: fellowShip
+                              ? Theme.of(context).colorScheme.tertiary
+                              : Theme.of(context).colorScheme.secondary,
+                          label: Text(
+                            'Fellowship',
+                            style: Theme.of(context)
+                                .textTheme
+                                .labelMedium!
+                                .copyWith(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onSecondary),
+                          ),
+                          onSelected: (_) {
+                            setState(() {
+                              fellowShip = !fellowShip;
+                            });
+                            if (fellowShip == true) {
+                              value.addJumuiya('FELLOWSHIP');
+                            } else {
+                              value.removeJumuiya('FELLOWSHIP');
                             }
                           },
                         ),

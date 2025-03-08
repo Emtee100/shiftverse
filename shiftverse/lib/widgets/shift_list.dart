@@ -19,7 +19,8 @@ class _ShiftListState extends State<ShiftList> {
           return const SliverToBoxAdapter(
               child: Center(child: CircularProgressIndicator()));
         } else if (snapshot.data!.isEmpty || !snapshot.hasData) {
-          return const SliverToBoxAdapter(child: Text('Select a filter to view shifts'));
+          return const SliverToBoxAdapter(
+              child: Text('Select a filter to view shifts'));
         } else if (snapshot.hasData) {
           return SliverList(
               delegate: SliverChildBuilderDelegate(
@@ -38,29 +39,21 @@ class _ShiftListState extends State<ShiftList> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const Text('Leaders on duty:'),
-                          Row(
-                            children: [
-                              Text(
-                                '1. ${snapshot.data![index][2]}',
-                              ),
-                              const SizedBox(width: 10),
-                              Text(
-                                '2. ${snapshot.data![index][3]}',
-                              ),
-                            ],
-                          ),
-                          Text(
-                            'Date: ${snapshot.data![index][0]}',
-                          ),
-                          Text('Jumuiya: ${snapshot.data![index][4]}'),
+                          Text('1. ${snapshot.data![index][2]}' +
+                              ' ${snapshot.data![index][3]}'),
+                          const SizedBox(width: 10),
+                          Text('2. ${snapshot.data![index][4]}' +
+                              ' ${snapshot.data![index][5]}'),
+                          Text('Date: ${snapshot.data![index][0]}'),
+                          Text('Jumuiya: ${snapshot.data![index][6]}'),
                         ],
                       )),
                 ));
           }));
         } else if (snapshot.hasError) {
           return const SliverToBoxAdapter(
-            child: Center(
-                child: Text('An error occurred while retrieving data')),
+            child:
+                Center(child: Text('An error occurred while retrieving data')),
           );
         } else {
           return const Text('Null');

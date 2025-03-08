@@ -62,32 +62,41 @@ class Reports extends StatelessWidget {
               backgroundColor: Theme.of(context).colorScheme.primary,
               onPressed: () {
                 showModalBottomSheet(
+
                     backgroundColor:
                         Theme.of(context).colorScheme.surfaceContainerLow,
                     showDragHandle: true,
                     context: context,
+                    isScrollControlled: true,
                     builder: (context) {
                       return Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 25),
-                        child: Column(
-                          children: [
-                            //const SizedBox(height: 15,),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  'Sale Report',
-                                  style: Theme.of(context).textTheme.titleLarge,
-                                )
-                              ],
+                        padding: EdgeInsets.only(
+                            bottom: MediaQuery.viewInsetsOf(context).bottom,
+                            right: 20,
+                            left: 20
                             ),
-                            const SizedBox(
-                              height: 15,
-                            ),
-                            ChangeNotifierProvider(
-                                create: (context) => FirebaseController(),
-                                child: const SaleReportForm())
-                          ],
+                        child: SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              //const SizedBox(height: 15,),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'Sale Report',
+                                    style:
+                                        Theme.of(context).textTheme.titleLarge,
+                                  )
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 15,
+                              ),
+                              ChangeNotifierProvider(
+                                  create: (context) => FirebaseController(),
+                                  child: const SaleReportForm())
+                            ],
+                          ),
                         ),
                       );
                     });
